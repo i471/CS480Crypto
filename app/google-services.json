@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "420325118370",
+    "firebase_url": "https://cryptopay-7d7a0.firebaseio.com",
+    "project_id": "cryptopay-7d7a0",
+    "storage_bucket": "cryptopay-7d7a0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:420325118370:android:29bca00500fa880a",
+        "android_client_info": {
+          "package_name": "com.example.robertgil.cs480crypto"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "420325118370-0abipgk92fdablqf918klqqa4g340jk9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.robertgil.cs480crypto",
+            "certificate_hash": "aea63ab2f790219a5c0968acf54f1209bbb2b60a"
+          }
+        },
+        {
+          "client_id": "420325118370-2vtfuugvum3gsnr1ncvi3eotm65cum73.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdIhX7Kv1zVx-7SZCVNwn2ysWSRVs_0o4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "420325118370-2vtfuugvum3gsnr1ncvi3eotm65cum73.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
