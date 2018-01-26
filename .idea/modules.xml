@@ -3,9 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/CS480Crypto.iml" filepath="$PROJECT_DIR$/CS480Crypto.iml" />
-      <module fileurl="file://C:\Users\b\CS480Crypto\CS480Crypto.iml" filepath="C:\Users\b\CS480Crypto\CS480Crypto.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://C:\Users\b\CS480Crypto\app\app.iml" filepath="C:\Users\b\CS480Crypto\app\app.iml" />
     </modules>
   </component>
 </project>
