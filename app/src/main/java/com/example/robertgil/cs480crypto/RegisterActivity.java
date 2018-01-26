@@ -12,7 +12,6 @@ import android.content.Loader;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -64,7 +63,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
-    private UserLoginTask mAuthTask = null;
+    //private UserLoginTask mAuthTask = null;
 
     // UI references.
     private AutoCompleteTextView mEmailView;
@@ -157,9 +156,9 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
      * errors are presented and no actual login attempt is made.
      */
     private void attemptRegister() {
-        if (mAuthTask != null) {
-            return;
-        }
+//        if (mAuthTask != null) {
+//            return;
+//        }
 
         // Reset errors.
         mEmailView.setError(null);
@@ -210,7 +209,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            showProgress(true);
+
             final FirebaseAuth mAuth = FirebaseAuth.getInstance();
             mAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -221,7 +220,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
                                 // Sign in success, update UI with the signed-in user's information
                                 FirebaseUser fbUser = mAuth.getCurrentUser();
                                 establishUser(fbUser, phone);
-                                showEmailDialogue();
+                                sendVerificationEmail(fbUser);
                             } else {
                                 // If sign in fails, display a message to the user.
 
@@ -230,10 +229,25 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
                             // ...
                         }
                     });
-            mAuthTask = new UserLoginTask(email, password);
+            //mAuthTask = new UserLoginTask(email, password);
             //mAuthTask.execute((Void) null);
         }
     }
+
+    private void sendVerificationEmail(FirebaseUser fbUser) {
+        fbUser.sendEmailVerification().addOnCompleteListener(this, new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    showEmailDialogue(true);
+                    showProgress(true);
+                } else {
+                    showEmailDialogue(false);
+                }
+            }
+        });
+    }
+
     private void establishUser(FirebaseUser fbUser, String phone) {
         User newUser = null;
         if (TextUtils.isEmpty(phone)) {
@@ -250,17 +264,22 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         return "IGuessThisIsAnId";
     }
 
-    private void showEmailDialogue() {
+    private void showEmailDialogue(final boolean successful) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final AlertDialog alert = builder.create();
-        alert.setTitle("Confirmation email sent.");
-
+        if (successful) {
+            alert.setTitle("Verification email sent.");
+        } else {
+            alert.setTitle("Problem sending verification email.");
+        }
         alert.setButton(BUTTON_POSITIVE,"Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Intent myIntent = new Intent(RegisterActivity.this,
-                        LoginActivity.class);
-                startActivity(myIntent);
+                if (successful) {
+                    Intent myIntent = new Intent(RegisterActivity.this,
+                            LoginActivity.class);
+                    startActivity(myIntent);
+                }
                 alert.dismiss();
             }
         });
@@ -372,57 +391,49 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mEmail;
-        private final String mPassword;
-
-        UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
-
-            // TODO: register the new account here.
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-
-            if (success) {
-                finish();
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
-        }
-    }
+//    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+//
+//        private final String mEmail;
+//        private final String mPassword;
+//
+//        UserLoginTask(String email, String password) {
+//            mEmail = email;
+//            mPassword = password;
+//        }
+//
+//        @Override
+//        protected Boolean doInBackground(Void... params) {
+//            // TODO: attempt authentication against a network service.
+//            for (String credential : DUMMY_CREDENTIALS) {
+//                String[] pieces = credential.split(":");
+//                if (pieces[0].equals(mEmail)) {
+//                    // Account exists, return true if the password matches.
+//                    return pieces[1].equals(mPassword);
+//                }
+//            }
+//
+//            // TODO: register the new account here.
+//            return true;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(final Boolean success) {
+//            mAuthTask = null;
+//            showProgress(false);
+//
+//            if (success) {
+//                finish();
+//            } else {
+//                mPasswordView.setError(getString(R.string.error_incorrect_password));
+//                mPasswordView.requestFocus();
+//            }
+//        }
+//
+//        @Override
+//        protected void onCancelled() {
+//            mAuthTask = null;
+//            showProgress(false);
+//        }
+//    }
 }
 

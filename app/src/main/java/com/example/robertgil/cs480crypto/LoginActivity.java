@@ -3,8 +3,10 @@ package com.example.robertgil.cs480crypto;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.pm.PackageManager;
@@ -38,6 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.Manifest.permission.READ_CONTACTS;
+import static android.content.DialogInterface.BUTTON_POSITIVE;
 
 /**
  * A login screen that offers login via email/password.
@@ -215,7 +218,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            showProgress(true);
             // Send to Firebase
             final FirebaseAuth mAuth = FirebaseAuth.getInstance();
             mAuth.signInWithEmailAndPassword(email, password)
@@ -223,8 +225,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                // TODO update UI with the signed-in user's information
                                 FirebaseUser user = mAuth.getCurrentUser();
+                                if (user.isEmailVerified()) {
+                                    showProgress(true);
+                                    // TODO update UI with the signed-in user's information
+                                } else {
+                                    emailNeedsVerification();
+                                }
                             } else {
                                 // TODO If sign in fails, display a message to the user.
 
@@ -233,9 +240,22 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             // ...
                         }
                     });
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
+            //mAuthTask = new UserLoginTask(email, password);
+            //mAuthTask.execute((Void) null);
         }
+    }
+
+    private void emailNeedsVerification() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final AlertDialog alert = builder.create();
+        alert.setTitle("Please verify your email before logging in.");
+        alert.setButton(BUTTON_POSITIVE,"Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                alert.dismiss();
+            }
+        });
+        alert.show();
     }
 
     private boolean isEmailValid(String email) {
