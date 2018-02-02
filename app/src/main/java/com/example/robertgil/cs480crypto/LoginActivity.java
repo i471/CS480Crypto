@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.LoaderManager.LoaderCallbacks;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,6 +21,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -35,7 +37,18 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.nexmo.sdk.NexmoClient;
+import com.nexmo.sdk.core.client.ClientBuilderException;
+import com.nexmo.sdk.verify.client.VerifyClient;
+import com.nexmo.sdk.verify.event.UserObject;
+import com.nexmo.sdk.verify.event.VerifyClientListener;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,6 +65,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     private static final int REQUEST_READ_CONTACTS = 0;
 
+    private final User userForPhone = new User();
+
+    private final String TAG = "LoginActivity";
     /**
      * A dummy authentication store containing known user names and passwords.
      * TODO: remove after connecting to a real authentication system.
@@ -115,18 +131,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
     }
-
-//    private void initializeFirebase() throws FileNotFoundException {
-//        FileInputStream serviceAccount =
-//                new FileInputStream("C:\\Users\\Alec\\Documents\\cryptopay-7d7a0-firebase-adminsdk-e6fdn-67f48c9832.json");
-//
-//        FirebaseOptions options = new FirebaseOptions.Builder()
-//                .setCredential(FirebaseCredentials.fromCertificate(serviceAccount))
-//                .setDatabaseUrl("https://cryptopay-7d7a0.firebaseio.com")
-//                .build();
-//
-//        FirebaseApp.initializeApp(options);
-//    }
 
     private void populateAutoComplete() {
         if (!mayRequestContacts()) {
@@ -227,6 +231,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             if (task.isSuccessful()) {
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 if (user.isEmailVerified()) {
+                                    String phone = null;
+                                    try {
+                                        getUserPhone(user);
+                                    } catch(Exception e) {
+
+                                    }
+                                    if (has2FA()) {
+                                        twoFactorAuth(user, phone);
+                                    }
                                     showProgress(true);
                                     // TODO update UI with the signed-in user's information
                                 } else {
@@ -242,6 +255,77 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     });
             //mAuthTask = new UserLoginTask(email, password);
             //mAuthTask.execute((Void) null);
+        }
+    }
+
+    private boolean has2FA() {
+        return (userForPhone.getPhone() != null) ? true : false;
+    }
+
+    private void getUserPhone(FirebaseUser user) throws InterruptedException {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users/" + user.getUid());
+        ref.keepSynced(true);
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    if (data.getKey().equals("phone")) {
+                        userForPhone.setPhone((String) data.getValue());
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        Thread.sleep(1000);
+    }
+
+    private void twoFactorAuth(final FirebaseUser user, final String phone) {
+        NexmoClient nexmoClient = createNexmoClient();
+        VerifyClient verifyClient = new VerifyClient(nexmoClient);
+        verifyClient.addVerifyListener(new VerifyClientListener() {
+            @Override
+            public void onVerifyInProgress(final VerifyClient verifyClient, UserObject usero) {
+                Log.d(TAG, "onVerifyInProgress for number: " + phone);
+            }
+
+            @Override
+            public void onUserVerified(final VerifyClient verifyClient, UserObject usero) {
+                Log.d(TAG, "onUserVerified for number: " + phone);
+            }
+
+            @Override
+            public void onError(final VerifyClient verifyClient, final com.nexmo.sdk.verify.event.VerifyError errorCode, UserObject usero) {
+                Log.d(TAG, "onError: " + errorCode + " for number: " + phone);
+            }
+
+            @Override
+            public void onException(final IOException exception) {
+                Log.d(TAG, "This shit aint working bra");
+            }
+        });
+    }
+
+    private NexmoClient createNexmoClient() {
+        Context context = getApplicationContext();
+        // Establish Nexmo data
+        final String MY_APP_ID = "3eb79e25-9d3c-45e3-8547-279b70aba8f9";
+        final String MY_APP_SHARED_SECRET = "caf8eb2ae48bfd8";
+        try {
+            NexmoClient nexmoClient = new NexmoClient.NexmoClientBuilder()
+                    .context(context)
+                    .applicationId(MY_APP_ID) //your App key
+                    .sharedSecretKey(MY_APP_SHARED_SECRET) //your App secret
+                    .build();
+            return nexmoClient;
+        } catch (ClientBuilderException e) {
+            e.printStackTrace();
+        } finally {
+            return null;
         }
     }
 
