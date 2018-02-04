@@ -264,7 +264,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private void getUserPhone(FirebaseUser user) throws InterruptedException {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users/" + user.getUid());
-        ref.keepSynced(true);
+        //ref.keepSynced(true);
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -281,7 +281,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             }
         });
-        Thread.sleep(1000);
     }
 
     private void twoFactorAuth(final FirebaseUser user, final String phone) {
