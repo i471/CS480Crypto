@@ -5,7 +5,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.LoaderManager.LoaderCallbacks;
-import android.content.Context;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -42,14 +41,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.nexmo.sdk.NexmoClient;
-import com.nexmo.sdk.core.client.ClientBuilderException;
-import com.nexmo.sdk.verify.client.VerifyClient;
-import com.nexmo.sdk.verify.event.UserObject;
-import com.nexmo.sdk.verify.event.VerifyClientListener;
 
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static android.Manifest.permission.READ_CONTACTS;
@@ -233,12 +227,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 if (user.isEmailVerified()) {
                                     String phone = null;
                                     try {
-                                        getUserPhone(user);
-                                    } catch(Exception e) {
-
-                                    }
-                                    if (has2FA()) {
-                                        twoFactorAuth(user, phone);
+                                        handle2FA(user);
+                                    } catch(InterruptedException e) {
+                                        e.printStackTrace();
                                     }
                                     showProgress(true);
                                     // TODO update UI with the signed-in user's information
@@ -247,11 +238,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 }
                             } else {
                                 // TODO If sign in fails, display a message to the user.
-
+                                Log.d(TAG,"Login task unsuccessful");
                             }
 
                             // ...
                         }
+
+
+
                     });
             //mAuthTask = new UserLoginTask(email, password);
             //mAuthTask.execute((Void) null);
@@ -262,70 +256,35 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         return (userForPhone.getPhone() != null) ? true : false;
     }
 
-    private void getUserPhone(FirebaseUser user) throws InterruptedException {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users/" + user.getUid());
-        //ref.keepSynced(true);
+    private void handle2FA(final FirebaseUser userfb) throws InterruptedException {
+        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users/" + userfb.getUid());
+        final String phone = "phone";
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot data : dataSnapshot.getChildren()) {
-                    if (data.getKey().equals("phone")) {
-                        userForPhone.setPhone((String) data.getValue());
+                for (DataSnapshot childSnap : dataSnapshot.getChildren()) {
+                    if (childSnap.getKey().equals(phone)) {
+                        HashMap<String, Object> map = (HashMap<String, Object>) dataSnapshot.getValue();
+                        userForPhone.setPhone(map.get(phone).toString());
                         break;
                     }
+                }
+                if (has2FA()) {
+                    Log.d(TAG,"Phone: " + userForPhone.getPhone());
+                    Bundle b = new Bundle();
+                    b.putString(phone, userForPhone.getPhone());
+                    Intent myIntent = new Intent(LoginActivity.this,
+                            TwoFactorAuthActivity.class);
+                    myIntent.putExtras(b);
+                    startActivity(myIntent);
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                Log.d(TAG,"shits broke");
             }
         });
-    }
-
-    private void twoFactorAuth(final FirebaseUser user, final String phone) {
-        NexmoClient nexmoClient = createNexmoClient();
-        VerifyClient verifyClient = new VerifyClient(nexmoClient);
-        verifyClient.addVerifyListener(new VerifyClientListener() {
-            @Override
-            public void onVerifyInProgress(final VerifyClient verifyClient, UserObject usero) {
-                Log.d(TAG, "onVerifyInProgress for number: " + phone);
-            }
-
-            @Override
-            public void onUserVerified(final VerifyClient verifyClient, UserObject usero) {
-                Log.d(TAG, "onUserVerified for number: " + phone);
-            }
-
-            @Override
-            public void onError(final VerifyClient verifyClient, final com.nexmo.sdk.verify.event.VerifyError errorCode, UserObject usero) {
-                Log.d(TAG, "onError: " + errorCode + " for number: " + phone);
-            }
-
-            @Override
-            public void onException(final IOException exception) {
-                Log.d(TAG, "This shit aint working bra");
-            }
-        });
-    }
-
-    private NexmoClient createNexmoClient() {
-        Context context = getApplicationContext();
-        // Establish Nexmo data
-        final String MY_APP_ID = "3eb79e25-9d3c-45e3-8547-279b70aba8f9";
-        final String MY_APP_SHARED_SECRET = "caf8eb2ae48bfd8";
-        try {
-            NexmoClient nexmoClient = new NexmoClient.NexmoClientBuilder()
-                    .context(context)
-                    .applicationId(MY_APP_ID) //your App key
-                    .sharedSecretKey(MY_APP_SHARED_SECRET) //your App secret
-                    .build();
-            return nexmoClient;
-        } catch (ClientBuilderException e) {
-            e.printStackTrace();
-        } finally {
-            return null;
-        }
     }
 
     private void emailNeedsVerification() {
