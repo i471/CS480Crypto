@@ -20,7 +20,7 @@ android {
         unitTests.returnDefaultValues = true
     }
 
-    packagingOptions {
+    /*packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/LICENSE.txt'
@@ -29,7 +29,7 @@ android {
         exclude 'META-INF/NOTICE.txt'
         exclude 'META-INF/notice.txt'
         exclude 'META-INF/ASL2.0'
-    }
+    } */
 }
 
 dependencies {
@@ -41,8 +41,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    compile 'com.nexmo:verify:4.0.0'
-    compile 'com.nexmo:client:2.0.1'
+    compile 'com.katepratik.msg91-android-sdk:library:0.1'
     compile 'com.google.firebase:firebase-core:11.8.0'
     compile "com.google.android.gms:play-services-gcm:11.8.0"
     compile 'com.google.gms:google-services:3.1.2'

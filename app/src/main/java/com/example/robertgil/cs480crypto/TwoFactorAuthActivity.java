@@ -1,18 +1,11 @@
 package com.example.robertgil.cs480crypto;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import com.nexmo.client.NexmoClient;
-import com.nexmo.client.NexmoClientException;
-import com.nexmo.client.auth.AuthMethod;
-import com.nexmo.client.auth.TokenAuthMethod;
-import com.nexmo.client.sms.SmsSubmissionResult;
-import com.nexmo.client.sms.messages.TextMessage;
+import com.katepratik.msg91api.MSG91;
 
-import java.io.IOException;
 import java.security.SecureRandom;
 
 public class TwoFactorAuthActivity extends AppCompatActivity {
@@ -26,22 +19,17 @@ public class TwoFactorAuthActivity extends AppCompatActivity {
         Bundle b = getIntent().getExtras();
         String phone = b.getString("phone");
         Log.d(TAG,"Phone number: " + phone);
-        try {
-            twoFactorAuth(phone);
-        } catch (IOException | NexmoClientException e) {
-            e.printStackTrace();
-        }
+        twoFactorAuth(phone);
     }
 
-    private void twoFactorAuth(final String phone) throws IOException, NexmoClientException {
-            NexmoClient client = createNexmoClient();
-            sendMessage(client, phone);
-    }
-
-    private void sendMessage(NexmoClient client, final String phone) throws IOException, NexmoClientException {
-        final String NEXMO_NUMBER = "12014160210";
-        TextMessage message = new TextMessage(NEXMO_NUMBER, phone, generateCode());
-        SmsSubmissionResult[] responses = client.getSmsClient().submitMessage(message);
+    private void twoFactorAuth(final String phone)  {
+        final String AUTH_KEY = "197390AB3Kzpivb4KJ5a7d1926";
+        MSG91 msg91 = new MSG91(AUTH_KEY);
+        String validate = msg91.validate();
+        msg91.composeMessage("testID","BIG TEST MESSAGE");
+        msg91.to(phone);
+        String result = msg91.send();
+        Log.d(TAG, "Send result: " + result);
     }
 
     private String generateCode() {
@@ -53,13 +41,4 @@ public class TwoFactorAuthActivity extends AppCompatActivity {
         return sb.toString();
     }
 
-    private NexmoClient createNexmoClient() {
-        Context context = getApplicationContext();
-        // Establish Nexmo data
-        final String API_KEY = "4aa63181";
-        final String API_SECRET = "ac18cc7f5f270daa";
-        AuthMethod auth = new TokenAuthMethod(API_KEY, API_SECRET);
-        NexmoClient client = new NexmoClient(auth);
-        return client;
-    }
 }
