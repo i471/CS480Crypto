@@ -225,7 +225,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             if (task.isSuccessful()) {
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 if (user.isEmailVerified()) {
-                                    String phone = null;
                                     try {
                                         handle2FA(user);
                                     } catch(InterruptedException e) {
@@ -257,34 +256,40 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private void handle2FA(final FirebaseUser userfb) throws InterruptedException {
-        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users/" + userfb.getUid());
-        final String phone = "phone";
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot childSnap : dataSnapshot.getChildren()) {
-                    if (childSnap.getKey().equals(phone)) {
-                        HashMap<String, Object> map = (HashMap<String, Object>) dataSnapshot.getValue();
-                        userForPhone.setPhone(map.get(phone).toString());
-                        break;
-                    }
-                }
-                if (has2FA()) {
-                    Log.d(TAG,"Phone: " + userForPhone.getPhone());
-                    Bundle b = new Bundle();
-                    b.putString(phone, userForPhone.getPhone());
-                    Intent myIntent = new Intent(LoginActivity.this,
+        Bundle b = new Bundle();
+        b.putString("email", userfb.getEmail());
+        Intent myIntent = new Intent(LoginActivity.this,
                             TwoFactorAuthActivity.class);
-                    myIntent.putExtras(b);
-                    startActivity(myIntent);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.d(TAG,"shits broke");
-            }
-        });
+        myIntent.putExtras(b);
+        startActivity(myIntent);
+//        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users/" + userfb.getUid());
+//        final String phone = "phone";
+//        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                for (DataSnapshot childSnap : dataSnapshot.getChildren()) {
+//                    if (childSnap.getKey().equals(phone)) {
+//                        HashMap<String, Object> map = (HashMap<String, Object>) dataSnapshot.getValue();
+//                        userForPhone.setPhone(map.get(phone).toString());
+//                        break;
+//                    }
+//                }
+//                if (has2FA()) {
+//                    Log.d(TAG,"Phone: " + userForPhone.getPhone());
+//                    Bundle b = new Bundle();
+//                    b.putString(phone, userForPhone.getPhone());
+//                    Intent myIntent = new Intent(LoginActivity.this,
+//                            TwoFactorAuthActivity.class);
+//                    myIntent.putExtras(b);
+//                    startActivity(myIntent);
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//                Log.d(TAG,"shits broke");
+//            }
+//        });
     }
 
     private void emailNeedsVerification() {
