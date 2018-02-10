@@ -20,4 +20,8 @@
     <string name="prompt_password_confirm">Confirm password</string>
     <string name="prompt_phone">Phone # for 2FA (optional)</string>
     <string name="action_register">Register</string>
+
+    <!-- 2FA Strings -->
+    <string name="TwoFAInstruction">A code has been sent to your email.\nEnter it below to login:</string>
+    <string name="code">Code</string>
 </resources>
