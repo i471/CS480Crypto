@@ -19,6 +19,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -52,6 +53,8 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
+
+    private final String TAG = "RegisterActivity";
 
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -223,7 +226,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
                                 sendVerificationEmail(fbUser);
                             } else {
                                 // If sign in fails, display a message to the user.
-
+                                Log.d(TAG,"Issue creating user");
                             }
 
                             // ...

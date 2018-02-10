@@ -21,7 +21,7 @@
     <string name="prompt_phone">Phone # for 2FA (optional)</string>
     <string name="action_register">Register</string>
 
-    <string name="title_activity_main">MainActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <!-- 2FA Strings -->
+    <string name="TwoFAInstruction">A code has been sent to your email.\nEnter it below to login:</string>
+    <string name="code">Code</string>
 </resources>

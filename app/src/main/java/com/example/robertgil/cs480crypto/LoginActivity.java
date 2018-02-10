@@ -20,6 +20,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -35,8 +36,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static android.Manifest.permission.READ_CONTACTS;
@@ -52,6 +59,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     private static final int REQUEST_READ_CONTACTS = 0;
 
+    private final User userForPhone = new User();
+
+    private final String TAG = "LoginActivity";
     /**
      * A dummy authentication store containing known user names and passwords.
      * TODO: remove after connecting to a real authentication system.
@@ -115,18 +125,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
     }
-
-//    private void initializeFirebase() throws FileNotFoundException {
-//        FileInputStream serviceAccount =
-//                new FileInputStream("C:\\Users\\Alec\\Documents\\cryptopay-7d7a0-firebase-adminsdk-e6fdn-67f48c9832.json");
-//
-//        FirebaseOptions options = new FirebaseOptions.Builder()
-//                .setCredential(FirebaseCredentials.fromCertificate(serviceAccount))
-//                .setDatabaseUrl("https://cryptopay-7d7a0.firebaseio.com")
-//                .build();
-//
-//        FirebaseApp.initializeApp(options);
-//    }
 
     private void populateAutoComplete() {
         if (!mayRequestContacts()) {
@@ -227,6 +225,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             if (task.isSuccessful()) {
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 if (user.isEmailVerified()) {
+                                    try {
+                                        handle2FA(user);
+                                    } catch(InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
                                     showProgress(true);
                                     // TODO update UI with the signed-in user's information
                                 } else {
@@ -234,15 +237,59 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 }
                             } else {
                                 // TODO If sign in fails, display a message to the user.
-
+                                Log.d(TAG,"Login task unsuccessful");
                             }
 
                             // ...
                         }
+
+
+
                     });
             //mAuthTask = new UserLoginTask(email, password);
             //mAuthTask.execute((Void) null);
         }
+    }
+
+    private boolean has2FA() {
+        return (userForPhone.getPhone() != null) ? true : false;
+    }
+
+    private void handle2FA(final FirebaseUser userfb) throws InterruptedException {
+        Bundle b = new Bundle();
+        b.putString("email", userfb.getEmail());
+        Intent myIntent = new Intent(LoginActivity.this,
+                            TwoFactorAuthActivity.class);
+        myIntent.putExtras(b);
+        startActivity(myIntent);
+//        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users/" + userfb.getUid());
+//        final String phone = "phone";
+//        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                for (DataSnapshot childSnap : dataSnapshot.getChildren()) {
+//                    if (childSnap.getKey().equals(phone)) {
+//                        HashMap<String, Object> map = (HashMap<String, Object>) dataSnapshot.getValue();
+//                        userForPhone.setPhone(map.get(phone).toString());
+//                        break;
+//                    }
+//                }
+//                if (has2FA()) {
+//                    Log.d(TAG,"Phone: " + userForPhone.getPhone());
+//                    Bundle b = new Bundle();
+//                    b.putString(phone, userForPhone.getPhone());
+//                    Intent myIntent = new Intent(LoginActivity.this,
+//                            TwoFactorAuthActivity.class);
+//                    myIntent.putExtras(b);
+//                    startActivity(myIntent);
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//                Log.d(TAG,"shits broke");
+//            }
+//        });
     }
 
     private void emailNeedsVerification() {
