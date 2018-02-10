@@ -20,4 +20,8 @@
     <string name="prompt_password_confirm">Confirm password</string>
     <string name="prompt_phone">Phone # for 2FA (optional)</string>
     <string name="action_register">Register</string>
+
+    <string name="title_activity_main">MainActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>
