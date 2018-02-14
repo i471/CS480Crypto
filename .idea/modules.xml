@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/CS480Crypto.iml" filepath="$PROJECT_DIR$/CS480Crypto.iml" />
+      <module fileurl="file://F:\Android_Studio\My_Applications\CS480Crypto_Al_Fork\CS480Crypto.iml" filepath="F:\Android_Studio\My_Applications\CS480Crypto_Al_Fork\CS480Crypto.iml" />
+      <module fileurl="file://$PROJECT_DIR$/CS480Crypto_Al_Fork.iml" filepath="$PROJECT_DIR$/CS480Crypto_Al_Fork.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://F:\Android_Studio\My_Applications\CS480Crypto_Al_Fork\app\app.iml" filepath="F:\Android_Studio\My_Applications\CS480Crypto_Al_Fork\app\app.iml" />
     </modules>
   </component>
 </project>
