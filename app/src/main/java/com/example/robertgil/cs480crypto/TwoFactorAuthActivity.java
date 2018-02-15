@@ -40,6 +40,7 @@ public class TwoFactorAuthActivity extends AppCompatActivity {
                     Thread.yield();
                 }
                 if (codeIsCorrect()) {
+                    Log.d(TAG, "The codes are a match");
                     //TODO update UI for main screen or something i guess lmfaoooooooooo
                 }
             }
@@ -64,7 +65,7 @@ public class TwoFactorAuthActivity extends AppCompatActivity {
     private class EmailAsker extends Thread {
 
         /* Replace this field with whatever your public IP is my dude */
-        private final String ipAddress = "134.71.136.130";
+        private final String ipAddress = "47.148.246.200";
         private final int PORT = 25443;
         private String email;
         private ObjectInputStream ois;
