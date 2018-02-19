@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_marginTop="30dp">
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="30dp">
 
         <TextView
             android:id="@+id/TwoFAInstruction"
@@ -28,12 +29,12 @@
 
             <AutoCompleteTextView
                 android:id="@+id/code"
-                android:hint="Code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_weight="1"
                 android:ems="10"
+                android:hint="@string/code"
                 android:inputType="textPersonName"
                 android:textAlignment="center"
                 tools:layout_editor_absoluteX="85dp"
@@ -41,13 +42,21 @@
 
         </android.support.design.widget.TextInputLayout>
 
+        <CheckBox
+            android:id="@+id/trustDevice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/trustDevice" />
+
         <Button
             android:id="@+id/continueButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Continue"
             android:layout_marginTop="20dp"
+            android:text="@string/continueBtn"
             tools:layout_editor_absoluteX="148dp"
             tools:layout_editor_absoluteY="277dp" />
     </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>
