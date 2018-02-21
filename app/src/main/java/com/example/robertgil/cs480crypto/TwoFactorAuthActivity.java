@@ -1,12 +1,16 @@
 package com.example.robertgil.cs480crypto;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -25,9 +29,11 @@ public class TwoFactorAuthActivity extends AppCompatActivity {
         setContentView(R.layout.activity_two_factor_auth);
         mCodeView = (EditText) findViewById(R.id.code);
         mContinueButton = (Button) findViewById(R.id.continueButton);
+        final CheckBox checkBox = (CheckBox) findViewById(R.id.trustDevice);
         Bundle b = getIntent().getExtras();
+        final String email = b.get("email").toString();
         try {
-            twoFactorAuth(b.get("email").toString());
+            twoFactorAuth(email);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -40,7 +46,19 @@ public class TwoFactorAuthActivity extends AppCompatActivity {
                     Thread.yield();
                 }
                 if (codeIsCorrect()) {
-                    Log.d(TAG, "The codes are a match");
+                    if (checkBox.isChecked()) {
+                        Log.d(TAG, "The codes are a match");
+                        final Context context = getApplicationContext();
+                        final String filename = "trusted.cfg";
+                        final File file = new File(context.getFilesDir(), filename);
+                        try {
+                            FileWriter fw = new FileWriter(file);
+                            fw.write("trusted " + email);
+                            fw.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
                     //TODO update UI for main screen or something i guess lmfaoooooooooo
                 }
             }

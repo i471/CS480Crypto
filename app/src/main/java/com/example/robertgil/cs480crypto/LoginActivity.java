@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.LoaderManager.LoaderCallbacks;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -36,15 +37,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Scanner;
 
 import static android.Manifest.permission.READ_CONTACTS;
 import static android.content.DialogInterface.BUTTON_POSITIVE;
@@ -185,8 +183,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
+        final String email = mEmailView.getText().toString();
+        final String password = mPasswordView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
@@ -225,9 +223,22 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             if (task.isSuccessful()) {
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 if (user.isEmailVerified()) {
+                                    final String filename = "trusted.cfg";
+                                    final String expectedInput = "trusted " + email;
                                     try {
-                                        handle2FA(user);
+                                        final Context context = getApplicationContext();
+                                        final File file = new File(context.getFilesDir(), filename);
+                                        if (file.exists()) {
+                                            Scanner scanner = new Scanner(file);
+                                            if (!scanner.nextLine().equals(expectedInput)) {
+                                                handle2FA(user);
+                                            }
+                                        } else {
+                                            handle2FA(user);
+                                        }
                                     } catch(InterruptedException e) {
+                                        e.printStackTrace();
+                                    } catch (FileNotFoundException e) {
                                         e.printStackTrace();
                                     }
                                     showProgress(true);

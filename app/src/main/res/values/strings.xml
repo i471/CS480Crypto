@@ -24,4 +24,6 @@
     <!-- 2FA Strings -->
     <string name="TwoFAInstruction">A code has been sent to your email.\nEnter it below to login:</string>
     <string name="code">Code</string>
+    <string name="trustDevice">Trust device (Disable 2 factor authentication for future logins)</string>
+    <string name="continueBtn">Continue</string>
 </resources>
