@@ -1,6 +1,7 @@
 package com.example.robertgil.cs480crypto;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -30,8 +31,8 @@ public class TwoFactorAuthActivity extends AppCompatActivity {
         mCodeView = (EditText) findViewById(R.id.code);
         mContinueButton = (Button) findViewById(R.id.continueButton);
         final CheckBox checkBox = (CheckBox) findViewById(R.id.trustDevice);
-        Bundle b = getIntent().getExtras();
-        final String email = b.get("email").toString();
+        final Bundle b = getIntent().getExtras();
+        final String email = ((String[]) b.get("user"))[0];
         try {
             twoFactorAuth(email);
         } catch (IOException e) {
@@ -59,10 +60,19 @@ public class TwoFactorAuthActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                     }
-                    //TODO update UI for main screen or something i guess lmfaoooooooooo
+                    openHome(b);
                 }
             }
         });
+    }
+
+
+
+    private void openHome(Bundle b) {
+        Intent myIntent = new Intent(TwoFactorAuthActivity.this,
+                HomeActivity.class);
+        myIntent.putExtras(b);
+        startActivity(myIntent);
     }
 
     private boolean codeIsCorrect() {

@@ -232,6 +232,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                             Scanner scanner = new Scanner(file);
                                             if (!scanner.nextLine().equals(expectedInput)) {
                                                 handle2FA(user);
+                                            } else {
+                                                openHome(user);
                                             }
                                         } else {
                                             handle2FA(user);
@@ -262,13 +264,22 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
+    private void openHome(FirebaseUser user) {
+        Bundle b = new Bundle();
+        b.putString("uid", user.getUid());
+        Intent myIntent = new Intent(LoginActivity.this,
+                HomeActivity.class);
+        myIntent.putExtras(b);
+        startActivity(myIntent);
+    }
+
     private boolean has2FA() {
         return (userForPhone.getPhone() != null) ? true : false;
     }
 
     private void handle2FA(final FirebaseUser userfb) throws InterruptedException {
         Bundle b = new Bundle();
-        b.putString("email", userfb.getEmail());
+        b.putStringArray("user", new String[]{userfb.getEmail(), userfb.getUid() });
         Intent myIntent = new Intent(LoginActivity.this,
                             TwoFactorAuthActivity.class);
         myIntent.putExtras(b);
