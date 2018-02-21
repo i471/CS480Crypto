@@ -46,7 +46,7 @@ public class Splashscreen extends Activity {
                     // Splash screen pause time
                     while (waited < 1500) {
                         sleep(100);
-                       // waited += 100;
+                        waited += 100;
                     }
                     Intent intent = new Intent(Splashscreen.this,
                             LoginActivity.class);
