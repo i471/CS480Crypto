@@ -81,14 +81,6 @@
 
             </android.support.design.widget.TextInputLayout>
 
-            <EditText
-                android:id="@+id/phoneNumber"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/prompt_phone"
-                android:inputType="phone" />
-
             <Button
                 android:id="@+id/email_register_button"
                 style="?android:textAppearanceSmall"

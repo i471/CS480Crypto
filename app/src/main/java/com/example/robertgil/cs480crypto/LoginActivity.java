@@ -56,8 +56,6 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
      */
     private static final int REQUEST_READ_CONTACTS = 0;
 
-    private final User userForPhone = new User();
-
     private final String TAG = "LoginActivity";
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -270,10 +268,6 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
                 HomeActivity.class);
         myIntent.putExtras(b);
         startActivity(myIntent);
-    }
-
-    private boolean has2FA() {
-        return (userForPhone.getPhone() != null) ? true : false;
     }
 
     private void handle2FA(final FirebaseUser userfb) throws InterruptedException {
