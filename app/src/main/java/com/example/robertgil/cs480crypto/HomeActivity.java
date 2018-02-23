@@ -1,9 +1,9 @@
 package com.example.robertgil.cs480crypto;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -11,7 +11,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends BaseActivity {
+
+    private final User user = new User();
 
     private final String TAG = "HomeActivity";
 
@@ -19,7 +21,6 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        showProgress(true);
         Bundle b = getIntent().getExtras();
         getUserData(b);
     }
@@ -27,20 +28,20 @@ public class HomeActivity extends AppCompatActivity {
     private void getUserData(Bundle b) {
         String uid = b.get("uid").toString();
         final DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users/" + uid);
-        final User user = new User();
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                final String key = dataSnapshot.getKey();
-                final String value = dataSnapshot.getValue().toString();
-                if (key.equals("email")) {
-                    user.setEmail(value);
-                } else if (key.equals("walletId")) {
-                    user.setWalletId(value);
+                for (DataSnapshot childSnap : dataSnapshot.getChildren()) {
+                    String key = childSnap.getKey();
+                    String value = childSnap.getValue().toString();
+                    if (key.equals("email")) {
+                        user.setEmail(value);
+                    } else if (key.equals("walletId")) {
+                        user.setWalletId(value);
+                    }
                 }
-                findViewById(R.id.loadingPanel).setVisibility(View.GONE);
-                Log.d(TAG, key);
-                //TODO update UI here
+                Log.d(TAG, user.getEmail());
+                updateUI();
             }
 
             @Override
@@ -50,8 +51,18 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
-    private void showProgress(boolean show) {
+    private void updateUI() {
+        // Remove loading view
+        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
 
+        // Load user information
+        final TextView loggedinAs = findViewById(R.id.loggedInAs);
+        loggedinAs.setText("Logged in as " + user.getEmail());
+        //TODO get wallet balance, put it in UI
+        double balance = 2.334563;
+        final TextView balanceView = findViewById(R.id.balanceView);
+        balanceView.setText("Current balance: " + balance);
+        findViewById(R.id.infoLayout).setVisibility(View.VISIBLE);
     }
 
 }

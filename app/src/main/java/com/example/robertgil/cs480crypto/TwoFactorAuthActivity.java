@@ -3,7 +3,6 @@ package com.example.robertgil.cs480crypto;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,7 +16,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class TwoFactorAuthActivity extends AppCompatActivity {
+public class TwoFactorAuthActivity extends BaseActivity {
 
     private final String TAG = "TwoFactorAuthActivity";
     private String code;
