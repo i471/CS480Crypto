@@ -72,7 +72,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private EditText mPasswordConfirmView;
-    private EditText mPhoneView;
     private View mProgressView;
     private View mRegisterFormView;
 
@@ -96,7 +95,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
                 return false;
             }
         });
-        mPhoneView = (EditText) findViewById(R.id.phoneNumber);
         Button mEmailRegisterButton = (Button) findViewById(R.id.email_register_button);
         mEmailRegisterButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -167,13 +165,11 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         mEmailView.setError(null);
         mPasswordView.setError(null);
         mPasswordConfirmView.setError(null);
-        mPhoneView.setError(null);
 
         // Store values at the time of the login attempt.
         final String email = mEmailView.getText().toString();
         final String password = mPasswordView.getText().toString();
         final String passwordConfirm = mPasswordConfirmView.getText().toString();
-        final String phone = mPhoneView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
@@ -222,7 +218,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
                                 System.out.println("It works!");
                                 // Sign in success, update UI with the signed-in user's information
                                 FirebaseUser fbUser = mAuth.getCurrentUser();
-                                establishUser(fbUser, phone);
+                                establishUser(fbUser);
                                 sendVerificationEmail(fbUser);
                             } else {
                                 // If sign in fails, display a message to the user.
@@ -251,13 +247,8 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         });
     }
 
-    private void establishUser(FirebaseUser fbUser, String phone) {
-        User newUser = null;
-        if (TextUtils.isEmpty(phone)) {
-            newUser = new User(fbUser.getEmail(), generateWalletId(fbUser));
-        } else {
-            newUser = new User(fbUser.getEmail(), phone, generateWalletId(fbUser));
-        }
+    private void establishUser(FirebaseUser fbUser) {
+        User newUser = new User(fbUser.getEmail(), generateWalletId(fbUser));
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users");
         ref.child(fbUser.getUid()).setValue(newUser);
     }
