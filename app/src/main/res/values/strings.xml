@@ -26,4 +26,11 @@
     <string name="code">Code</string>
     <string name="trustDevice">Trust device (Disable 2 factor authentication for future logins)</string>
     <string name="continueBtn">Continue</string>
+
+    <string-array name="coin_array">
+        <item>Dogecoin</item>
+        <item>Bitcoin</item>
+        <item>Litecoin</item>
+
+    </string-array>
 </resources>
