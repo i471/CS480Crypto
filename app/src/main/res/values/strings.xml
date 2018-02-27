@@ -26,4 +26,22 @@
     <string name="code">Code</string>
     <string name="trustDevice">Trust device (Disable 2 factor authentication for future logins)</string>
     <string name="continueBtn">Continue</string>
+
+
+    <!-- random strings for alberts part -->
+    <string name="serviceFeeText">will be charged to your wallet including service fee</string>
+    <string name="sendText">Send</string>
+    <string name="sendMoneyToText">Send money to : </string>
+    <string name="fromWalletText">From wallet:</string>
+    <string name="amountText">Amount:</string>
+    <string name="empty"></string>
+    <string name="sk31_1200_0000_1987_4263">SK31 1200 0000 1987 4263</string>
+    <string name="_3_00">3.00</string>
+
+    <string-array name="coin_array">
+        <item>Dogecoin</item>
+        <item>Bitcoin</item>
+        <item>Litecoin</item>
+
+    </string-array>
 </resources>
