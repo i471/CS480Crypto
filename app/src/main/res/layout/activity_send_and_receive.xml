@@ -14,10 +14,11 @@
         android:layout_height="45dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:contentDescription="@string/empty"
         android:ems="10"
         android:gravity="center"
         android:inputType="textPersonName"
-        android:text="SK31 1200 0000 1987 4263"
+        android:text="@string/sk31_1200_0000_1987_4263"
         app:layout_constraintStart_toEndOf="@+id/sendMoneyToImage"
         app:layout_constraintTop_toBottomOf="@+id/sendMoneyToID" />
 
@@ -48,31 +49,31 @@
         style="@style/Widget.AppCompat.Button.Small"
         android:layout_width="226dp"
         android:layout_height="39dp"
-        android:layout_marginBottom="120dp"
+        android:layout_marginBottom="112dp"
         android:layout_marginEnd="48dp"
-        android:text="SEND"
+        android:text="@string/sendText"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline2" />
 
     <TextView
         android:id="@+id/serviceFeeTextId"
         android:layout_width="224dp"
-        android:layout_height="23dp"
+        android:layout_height="40dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:gravity="center"
-        android:text="will be charged as a service fee."
+        android:text="@string/serviceFeeText"
         app:layout_constraintBottom_toTopOf="@+id/sendButtonID"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintHorizontal_bias="0.022"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/sendButtonID" />
 
     <TextView
         android:id="@+id/sendMoneyToID"
         android:layout_width="98dp"
-        android:layout_height="20dp"
+        android:layout_height="16dp"
         android:layout_marginStart="16dp"
-        android:text="Send money to:"
+        android:text="@string/sendMoneyToText"
         app:layout_constraintStart_toEndOf="@+id/sendMoneyToImage"
         app:layout_constraintTop_toTopOf="@+id/sendMoneyToImage" />
 
@@ -82,7 +83,7 @@
         android:layout_height="23dp"
         android:layout_marginBottom="2dp"
         android:layout_marginStart="16dp"
-        android:text="from wallet:"
+        android:text="@string/fromWalletText"
         app:layout_constraintBottom_toTopOf="@+id/walletSpinnerID"
         app:layout_constraintStart_toEndOf="@+id/typeOfWalletImage" />
 
@@ -90,10 +91,10 @@
         android:id="@+id/serviceFeeAmountID"
         android:layout_width="125dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
+        android:layout_marginBottom="2dp"
         android:layout_marginEnd="100dp"
         android:gravity="center"
-        android:text="serviceFee"
+        android:text="@string/_3_00"
         app:layout_constraintBottom_toTopOf="@+id/serviceFeeTextId"
         app:layout_constraintEnd_toStartOf="@+id/guideline2" />
 
@@ -103,7 +104,7 @@
         android:layout_height="25dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
-        android:text="amount:"
+        android:text="@string/amountText"
         app:layout_constraintStart_toEndOf="@+id/amountImage"
         app:layout_constraintTop_toBottomOf="@+id/walletSpinnerID" />
 
@@ -119,6 +120,7 @@
         android:layout_width="55dp"
         android:layout_height="70dp"
         android:layout_marginTop="96dp"
+        android:contentDescription="@string/empty"
         app:layout_constraintStart_toStartOf="@+id/guideline5"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/common_full_open_on_phone" />
@@ -128,6 +130,7 @@
         android:layout_width="56dp"
         android:layout_height="66dp"
         android:layout_marginTop="32dp"
+        android:contentDescription="@string/empty"
         app:layout_constraintStart_toStartOf="@+id/guideline5"
         app:layout_constraintTop_toBottomOf="@+id/typeOfWalletImage"
         app:srcCompat="@drawable/amount" />
@@ -137,6 +140,7 @@
         android:layout_width="56dp"
         android:layout_height="70dp"
         android:layout_marginTop="32dp"
+        android:contentDescription="@string/empty"
         app:layout_constraintStart_toStartOf="@+id/guideline5"
         app:layout_constraintTop_toBottomOf="@+id/sendMoneyToImage"
         app:srcCompat="@drawable/dogecoin" />
