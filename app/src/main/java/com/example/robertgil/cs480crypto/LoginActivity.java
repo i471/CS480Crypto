@@ -57,8 +57,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     private static final int REQUEST_READ_CONTACTS = 0;
 
-    private final User userForPhone = new User();
-
     private final String TAG = "LoginActivity";
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -260,10 +258,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             //mAuthTask = new UserLoginTask(email, password);
             //mAuthTask.execute((Void) null);
         }
-    }
-
-    private boolean has2FA() {
-        return (userForPhone.getPhone() != null) ? true : false;
     }
 
     private void handle2FA(final FirebaseUser userfb) throws InterruptedException {
