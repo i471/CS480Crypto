@@ -35,7 +35,7 @@
     <string name="fromWalletText">From wallet:</string>
     <string name="amountText">Amount:</string>
     <string name="empty"></string>
-    <string name="sk31_1200_0000_1987_4263">SK31 1200 0000 1987 4263</string>
+    <string name="dogeCoinTestAdress">2MxviUjH41KYbgndhTQe6LstF1yqyqKhqEb</string>
     <string name="_3_00">3.00</string>
 
     <string-array name="coin_array">
