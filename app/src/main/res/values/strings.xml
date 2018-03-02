@@ -36,7 +36,7 @@
     <string name="amountText">Amount:</string>
     <string name="empty"></string>
     <string name="dogeCoinTestAdress">2MxviUjH41KYbgndhTQe6LstF1yqyqKhqEb</string>
-    <string name="_3_00">3.00</string>
+    <string name="_3_00">1.00</string>
 
     <string-array name="coin_array">
         <item>Dogecoin</item>
