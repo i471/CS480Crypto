@@ -10,7 +10,6 @@ import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -19,22 +18,22 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import org.json.JSONException;
-
 import java.io.IOException;
 
 
 public class SendAndReceiveActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private Spinner spinner;
-    TextView serviceFeeID,balanceID;
-    EditText addressToSendToID,amountEditText;
-    Button sendButton;
+    private TextView serviceFeeID,balanceID;
+    private EditText addressToSendToID,amountEditText;
+    private Button sendBtn;
+
+    private WalletModel model = new WalletModel();
+    private WalletView view = new WalletView();
+    private WalletController testRun = new WalletController(view, model);
     private static final String[] paths = {"Dogecoin", "Bitcoin", "Litecoin"};
-    WalletModel model = new WalletModel();
-    WalletView view = new WalletView();
-    WalletController testRun = new WalletController(view, model);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +50,7 @@ public class SendAndReceiveActivity extends AppCompatActivity implements Adapter
         //****************************************
 
         //*********Button Initialization***********
-        Button sendBtn= findViewById(R.id.sendButtonID);
+        sendBtn= findViewById(R.id.sendButtonID);
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -198,13 +197,12 @@ public class SendAndReceiveActivity extends AppCompatActivity implements Adapter
      * */
     private void confirmDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(SendAndReceiveActivity.this);
-
         builder
                 .setMessage("Are you sure?")
                 .setPositiveButton("Yes, im sure.",  new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        Toast.makeText(SendAndReceiveActivity.this, "Yes", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SendAndReceiveActivity.this, "Order Sent!", Toast.LENGTH_SHORT).show();
                         //new sendConfirmationOnButtonPress().execute();
                     }
                 })
@@ -218,6 +216,10 @@ public class SendAndReceiveActivity extends AppCompatActivity implements Adapter
                 .show();
     }
 
+    /**
+     * sendConfirmationOnButtonPress
+     * This runs the api command to send the crypocurrency to the specified adress&amount.
+     * */
     private class sendConfirmationOnButtonPress extends AsyncTask<String, String, String> {
         @Override
         protected String doInBackground(String... strings) {
