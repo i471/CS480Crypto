@@ -29,7 +29,7 @@
 
 
     <!-- random strings for alberts part -->
-    <string name="serviceFeeText">will be charged to your wallet including service fee</string>
+    <string name="serviceFeeText">will be charged to your wallet as a service fee</string>
     <string name="sendText">Send</string>
     <string name="sendMoneyToText">Send money to : </string>
     <string name="fromWalletText">From wallet:</string>

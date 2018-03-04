@@ -25,12 +25,11 @@
     <Spinner
         android:id="@+id/walletSpinnerID"
         android:layout_width="224dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="380dp"
+        android:layout_height="41dp"
+        android:layout_marginBottom="391dp"
         android:layout_marginEnd="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/BalanceAmountTextView" />
+        app:layout_constraintEnd_toStartOf="@+id/guideline2" />
 
     <EditText
         android:id="@+id/amountEditText"
@@ -41,6 +40,7 @@
         android:ems="10"
         android:gravity="center"
         android:inputType="textPersonName"
+        android:text="2.00"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/amountImage"
@@ -169,23 +169,24 @@
 
     <TextView
         android:id="@+id/BalanceTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="54dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginTop="16dp"
         android:text="Balance:"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/BalanceAmountTextView"
+        app:layout_constraintHorizontal_bias="0.612"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/BalanceAmountTextView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="170dp"
-        android:layout_marginTop="34dp"
+        android:layout_height="19dp"
+        android:layout_marginEnd="200dp"
+        android:layout_marginTop="16dp"
         android:text="0"
-        app:layout_constraintBottom_toTopOf="@+id/walletSpinnerID"
-        app:layout_constraintStart_toStartOf="@+id/BalanceTextView"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

@@ -18,15 +18,17 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import org.json.JSONException;
+
 import java.io.IOException;
 
 
 public class SendAndReceiveActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private Spinner spinner;
-    private TextView serviceFeeID,balanceID;
-    private EditText addressToSendToID,amountEditText;
+    private TextView serviceFeeID, balanceID;
+    private EditText addressToSendToID, amountEditText;
     private Button sendBtn;
 
     private WalletModel model = new WalletModel();
@@ -40,6 +42,11 @@ public class SendAndReceiveActivity extends AppCompatActivity implements Adapter
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_send_and_receive);
+        amountEditText = findViewById(R.id.amountEditText);
+        addressToSendToID = findViewById(R.id.adressToSendToText);
+        serviceFeeID = findViewById(R.id.serviceFeeAmountID);
+        balanceID = findViewById(R.id.BalanceAmountTextView);
+
 
         //**********Spinner Set Up***************
         spinner = findViewById(R.id.walletSpinnerID);
@@ -47,36 +54,40 @@ public class SendAndReceiveActivity extends AppCompatActivity implements Adapter
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
-        //****************************************
+
 
         //*********Button Initialization***********
-        sendBtn= findViewById(R.id.sendButtonID);
+        sendBtn = findViewById(R.id.sendButtonID);
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 confirmDialog();
             }
         });
-        //******************************************
+
+        testRun.setRecipent_Adress(String.valueOf(addressToSendToID.getText()));
+        testRun.setAmount(2);
+
+        //****************************************
+        //
+        // ********************************************
+        /**
+         // THESE VALUES ARE SPECIFIC TO EACH ACCOUNT THESE I WANT TO SAVE TO FIREBASE PER ACCOUNT
+         // NEED TO SET USERS API KEY BEFORE WALLET API WORKS
+        */
+        testRun.setAPIkey("39c9-9dab-8d2a-62ff"); // Need Api key for account access
+        testRun.setSecret_Key("12345678"); // API also requires Secret key
 
 
-        // NEED TO SET USERS API KEY BEFORE WALLET API WORKS
-        testRun.setAPIkey("e5ed-0847-8256-7f49"); // Need Api key for account access
 
 
 
-        serviceFeeID = findViewById(R.id.serviceFeeAmountID);
-        balanceID = findViewById(R.id.BalanceAmountTextView);
+        /**
+         * Receives input from the ADDRESS EditText Field
+         * Used to get input from user about which adress to send the coin too
+         * as soon as the accept button or enter is pressed its saved into the instance
+         * */
 
-
-
-
-    /**
-    * Receives input from the ADDRESS EditText Field
-    * Used to get input from user about which adress to send the coin too
-    * as soon as the accept button or enter is pressed its saved into the instance
-    * */
-        addressToSendToID = findViewById(R.id.adressToSendToText);
         addressToSendToID.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
@@ -88,18 +99,18 @@ public class SendAndReceiveActivity extends AppCompatActivity implements Adapter
             }
         });
 
-    /**
-     * Receives input from the AMOUNT EditText Field
-     * Used to get input from user about the amount of coin to send.
-     * as soon as the accept button or enter is pressed its saved into the instance
-     * */
-        amountEditText = findViewById(R.id.amountEditText);
+        /**
+         * Receives input from the AMOUNT EditText Field
+         * Used to get input from user about the amount of coin to send.
+         * as soon as the accept button or enter is pressed its saved into the instance
+         * */
+
         amountEditText.setInputType(InputType.TYPE_CLASS_NUMBER); // Only allow numbers in amount field
         amountEditText.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     Toast.makeText(SendAndReceiveActivity.this, "Amount Received", Toast.LENGTH_SHORT).show();
-                    String test = "";
+                    String test;
                     test = String.valueOf(amountEditText.getText());
                     double number = Double.valueOf(test);
                     testRun.setAmount(number);
@@ -111,8 +122,6 @@ public class SendAndReceiveActivity extends AppCompatActivity implements Adapter
             }
         });
 
-
-
         new accessAccountBalance().execute(testRun.getApi_Key());
 
     }
@@ -123,7 +132,6 @@ public class SendAndReceiveActivity extends AppCompatActivity implements Adapter
         sb += APIKEY;
         model.setJsonResponse(model.getJSON(sb));
     }
-
 
     /**
      * onItemSelected for the send and recieve spinner.
@@ -138,17 +146,20 @@ public class SendAndReceiveActivity extends AppCompatActivity implements Adapter
         tv = findViewById(R.id.amountTextType);
         switch (pos) {
             case 0:
-                Toast.makeText(this, "dogeselected", Toast.LENGTH_SHORT).show();
+                testRun.setAPIkey("39c9-9dab-8d2a-62ff"); //DOGE WALLET
+                Toast.makeText(this, testRun.getApi_Key(), Toast.LENGTH_SHORT).show();
                 iv.setImageResource(R.drawable.dogecoin);
                 tv.setText("DOGE");
                 break;
             case 1:
-                Toast.makeText(this, "bitcoinselected", Toast.LENGTH_SHORT).show();
+                testRun.setAPIkey("cc80-06be-af22-b8dd"); //DOGE WALLET
+                Toast.makeText(this, testRun.getApi_Key(), Toast.LENGTH_SHORT).show();
                 iv.setImageResource(R.drawable.bitcoin);
                 tv.setText("BTC");
                 break;
             case 2:
-                Toast.makeText(this, "litcoinselected", Toast.LENGTH_SHORT).show();
+                testRun.setAPIkey("5d56-aa37-16ff-d08b");//litecoinwallet
+                Toast.makeText(this, testRun.getApi_Key(), Toast.LENGTH_SHORT).show();
                 iv.setImageResource(R.drawable.litecoin2);
                 tv.setText("LTC");
                 break;
@@ -157,11 +168,11 @@ public class SendAndReceiveActivity extends AppCompatActivity implements Adapter
 
     /**
      * onNothingSelected for the send and recieve spinner.
-     * Used when nothing on the spinner is selected
+     * wont be using but need to implement anyway.
      */
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
-        Toast.makeText(this, "NOTHINGSELECTED", Toast.LENGTH_SHORT).show();
+
 
     }
 
@@ -178,6 +189,7 @@ public class SendAndReceiveActivity extends AppCompatActivity implements Adapter
             }
             return null;
         }
+
         @Override
         protected void onPostExecute(String result) {
             try {
@@ -189,26 +201,24 @@ public class SendAndReceiveActivity extends AppCompatActivity implements Adapter
     }
 
 
-
     /**
      * Confirmation Diaglog box to confirm the sending of the cryptocurrency
      * This prevents accidental sends on the app.
      * Provides two options on the alert dialog, yes/no and runs the code accordingly
-     * */
+     */
     private void confirmDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(SendAndReceiveActivity.this);
         builder
                 .setMessage("Are you sure?")
-                .setPositiveButton("Yes, im sure.",  new DialogInterface.OnClickListener() {
+                .setPositiveButton("Yes, im sure.", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        Toast.makeText(SendAndReceiveActivity.this, "Order Sent!", Toast.LENGTH_SHORT).show();
-                        //new sendConfirmationOnButtonPress().execute();
+                        new sendConfirmationOnButtonPress().execute();
                     }
                 })
                 .setNegativeButton("Nope nope nope", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog,int id) {
+                    public void onClick(DialogInterface dialog, int id) {
                         Toast.makeText(SendAndReceiveActivity.this, "No", Toast.LENGTH_SHORT).show();
                         dialog.cancel();
                     }
@@ -219,15 +229,45 @@ public class SendAndReceiveActivity extends AppCompatActivity implements Adapter
     /**
      * sendConfirmationOnButtonPress
      * This runs the api command to send the crypocurrency to the specified adress&amount.
-     * */
-    private class sendConfirmationOnButtonPress extends AsyncTask<String, String, String> {
+     */
+    private class sendConfirmationOnButtonPress extends AsyncTask<Void, Void, Void> {
+        String apikey, recAddress, secretKey;
+        Double amount;
+
+
         @Override
-        protected String doInBackground(String... strings) {
+        protected void onPreExecute() {
+            super.onPreExecute();
+            //Withdrawl needs APIKEY,AMOUNT,RECIPENTADDRESS,SECRETKEY//
+            apikey = testRun.getApi_Key();
+            amount = testRun.getAmount();
+            recAddress = testRun.getrecipient_Address();
+            secretKey = testRun.getSecret_Key();
+
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                testRun.withDrawFromAccount(apikey, amount, recAddress, secretKey);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             return null;
         }
+
         @Override
-        protected void onPostExecute(String result) {
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            Toast.makeText(SendAndReceiveActivity.this, "SENT", Toast.LENGTH_SHORT).show();
+
+            new accessAccountBalance().execute(testRun.getApi_Key());
+
         }
+
+
     }
 
 }
