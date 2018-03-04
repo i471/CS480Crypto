@@ -10,21 +10,22 @@ specific types of data depending on the call.
 public class WalletView {
 
     public void getNetwork(JSONObject Response) throws JSONException {
-        System.out.println("Network : " + Response.getJSONObject("data").getString("network"));
+        //System.out.println("Network : " + Response.getJSONObject("data").getString("network"));
     }
 
     public String getBalance(JSONObject Response) throws JSONException {
-        System.out.println("Balance : " + Response.getJSONObject("data").getString("available_balance"));
+        //System.out.println("Balance : " + Response.getJSONObject("data").getString("available_balance"));
         return Response.getJSONObject("data").getString("available_balance");
     }
 
     public void get_Amount_Sent(JSONObject Response) throws JSONException {
-        System.out.println("Amount Sent : " + Response.getJSONObject("data").getString("amount_sent"));
+        //System.out.println("Amount Sent : " + Response.getJSONObject("data").getString("amount_sent"));
 
     }
 
-    public void get_Network_Fee(JSONObject Response) throws JSONException {
-        System.out.println("Network Fee : " + Response.getJSONObject("data").getString("network_fee"));
+    public String get_Network_Fee(JSONObject Response) throws JSONException {
+        //System.out.println("Network Fee : " + Response.getJSONObject("data").getString("network_fee"));
+        return Response.getJSONObject("data").getString("network_fee");
 
     }
     public String get_estimated_network_fee(JSONObject Response) throws JSONException {
