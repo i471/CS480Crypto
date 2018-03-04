@@ -1,13 +1,17 @@
 package com.example.robertgil.cs480crypto;
 
+import java.io.Serializable;
+
 /**
  * Created by Alec on 1/20/2018.
  */
 
-public class User {
+public class User implements Serializable {
 
     private String email;
     private String walletId;
+    private String apiKey;
+    private String secretKey;
 
     User() {
         email = null;
@@ -33,5 +37,21 @@ public class User {
 
     public String getWalletId() {
         return walletId;
+    }
+
+    public String getApiKey() {
+        return apiKey;
+    }
+
+    public void setApiKey(String apiKey) {
+        this.apiKey = apiKey;
+    }
+
+    public String getSecretKey() {
+        return secretKey;
+    }
+
+    public void setSecretKey(String secretKey) {
+        this.secretKey = secretKey;
     }
 }
