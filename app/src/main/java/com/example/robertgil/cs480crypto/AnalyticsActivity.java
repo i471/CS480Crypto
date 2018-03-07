@@ -35,20 +35,21 @@ public class AnalyticsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_analytics);
+          setContentView(R.layout.activity_analytics);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        // AppBarLayout app = (AppBarLayout)findViewById(R.id.appbar);
 
-        btc_value = (TextView) findViewById(R.id.btc_value);
-        eth_value = (TextView) findViewById(R.id.eth_value);
-        currency = (TextView) findViewById(R.id.textViewCurrency);
+       // AppBarLayout app = (AppBarLayout)findViewById(R.id.appbar);
 
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
+        btc_value = (TextView)findViewById(R.id.btc_value);
+        eth_value = (TextView)findViewById(R.id.eth_value);
+        currency = (TextView)findViewById(R.id.textViewCurrency);
+
+        recyclerView = (RecyclerView)findViewById(R.id.recyclerview);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         cardItemsList = new ArrayList<>();
@@ -80,7 +81,7 @@ public class AnalyticsActivity extends AppCompatActivity {
                             Iterator<?> keysBTC = btc_values.keys();
                             Iterator<?> keysETH = eth_values.keys();
 
-                            while (keysBTC.hasNext() && keysETH.hasNext()) {
+                            while(keysBTC.hasNext() && keysETH.hasNext()) {
 
                                 String keyBTC = (String) keysBTC.next();
                                 String keyETH = (String) keysETH.next();
