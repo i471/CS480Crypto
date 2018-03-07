@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:layout_margin="10dp"
-        card_view:cardBackgroundColor="#0a3628"
+        card_view:cardBackgroundColor="#0a7890"
         card_view:cardCornerRadius="10dp"
         card_view:cardElevation="4dp">
 
@@ -118,7 +118,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:layout_margin="10dp"
-        card_view:cardBackgroundColor="#6f0000"
+        card_view:cardBackgroundColor="#5f7890"
         card_view:cardCornerRadius="10dp"
         card_view:cardElevation="2dp">
 
