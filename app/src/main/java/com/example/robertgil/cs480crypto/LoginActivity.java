@@ -234,7 +234,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                         } else {
                                             handle2FA(user);
                                         }
-                                    } catch(InterruptedException e) {
+                                    } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     } catch (FileNotFoundException e) {
                                         e.printStackTrace();
@@ -246,12 +246,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 }
                             } else {
                                 // TODO If sign in fails, display a message to the user.
-                                Log.d(TAG,"Login task unsuccessful");
+                                Log.d(TAG, "Login task unsuccessful");
                             }
 
                             // ...
                         }
-
 
 
                     });
@@ -264,7 +263,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         Bundle b = new Bundle();
         b.putString("email", userfb.getEmail());
         Intent myIntent = new Intent(LoginActivity.this,
-                            TwoFactorAuthActivity.class);
+                TwoFactorAuthActivity.class);
         myIntent.putExtras(b);
         startActivity(myIntent);
 //        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users/" + userfb.getUid());
@@ -301,7 +300,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final AlertDialog alert = builder.create();
         alert.setTitle("Please verify your email before logging in.");
-        alert.setButton(BUTTON_POSITIVE,"Ok", new DialogInterface.OnClickListener() {
+        alert.setButton(BUTTON_POSITIVE, "Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 alert.dismiss();

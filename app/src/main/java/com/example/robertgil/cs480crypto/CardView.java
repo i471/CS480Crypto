@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class CardView extends RecyclerView.Adapter<CardView.ViewHolder>{
+public class CardView extends RecyclerView.Adapter<CardView.ViewHolder> {
     public CardView(List<CardItems> cardItemsList, Context context) {
 
         this.cardItemsList = cardItemsList;
@@ -41,8 +41,8 @@ public class CardView extends RecyclerView.Adapter<CardView.ViewHolder>{
         final double EthVal = cardItem.getEth_value();
 
         holder.currency.setText(curr);
-        holder.btc_value.setText(String.format("%1$,.2f",btcVal));
-        holder.eth_value.setText(String.format("%1$,.2f",EthVal));
+        holder.btc_value.setText(String.format("%1$,.2f", btcVal));
+        holder.eth_value.setText(String.format("%1$,.2f", EthVal));
 
         holder.cardLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,7 +56,6 @@ public class CardView extends RecyclerView.Adapter<CardView.ViewHolder>{
             }
         });
 
-
     }
 
     @Override
@@ -64,7 +63,7 @@ public class CardView extends RecyclerView.Adapter<CardView.ViewHolder>{
         return cardItemsList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView btc_value, eth_value, currency;
         LinearLayout cardLinearLayout;

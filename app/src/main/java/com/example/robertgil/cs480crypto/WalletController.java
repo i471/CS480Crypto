@@ -1,21 +1,9 @@
 package com.example.robertgil.cs480crypto;
 
-
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.Scanner;
 
-//Test
-@SuppressWarnings("SpellCheckingInspection")
-
-        /*
-         * Wallet Controller class that holds all the functionallity for wallet manipulation
-         * including Acessing balance,withdrawing,estimatingnetworkfee, and sending money to other users
-         * Some parameters are needed before a lot of the functions are used. Depending on the methods passed values we'd have
-         * store that first IE Store amount_to_send before calling sendMoney();
-         * */
 
 class WalletController {
     private final WalletModel model;
@@ -38,8 +26,6 @@ class WalletController {
 
     public void withDrawFromAccount(String APIKEY, Double amount_to_send, String adress_to_send_to, String secret_pin) throws IOException, JSONException {
         String sb = "https://block.io/api/v2/withdraw/?api_key=" + APIKEY + "&amounts=" + amount_to_send + "&to_addresses=" + adress_to_send_to + "&pin=" + secret_pin;
-
-
         model.setJsonResponse(model.getJSON(sb));
     }
 
@@ -48,33 +34,6 @@ class WalletController {
         model.setJsonResponse(model.getJSON(sb));
     }
 
-    public String obtainAPIKEY() {
-        view.obtain_Key_String();
-        Scanner reader = new Scanner(System.in);
-        api_Key = reader.next();
-        return api_Key;
-    }
-
-    public Double obtainAmount() {
-        view.obtain_Amount_To_Send();
-        Scanner reader = new Scanner(System.in);
-        amount = reader.nextDouble();
-        return amount;
-    }
-
-    public String obtainSecret_Key() {
-        view.obtain_Secret_Key();
-        Scanner reader = new Scanner(System.in);
-        secret_Key = reader.next();
-        return secret_Key;
-    }
-
-    public String obtainReciepient_adresss() {
-        view.obtain_Recipient_Address();
-        Scanner reader = new Scanner(System.in);
-        recipient_Address = reader.next();
-        return recipient_Address;
-    }
 
     public void setRecipent_Adress(String recipient_Address) {
         this.recipient_Address = recipient_Address;
@@ -109,78 +68,5 @@ class WalletController {
         return secret_Key;
     }
 
-    public void pickOption() throws IOException, JSONException {
-        try {
-            int x;
-            boolean exit = true;
-            view.pickOptionString();
-            while (exit) {
-                Scanner reader = new Scanner(System.in);
-                x = reader.nextInt();
-
-
-                switch (x) {
-                    case 1:
-                        accessAccountBalance(getApi_Key());
-                        view.getBalance(model.getJsonResponse());
-                        break;
-                    case 2:
-                        accessAccountBalance(getApi_Key());
-                        view.getNetwork(model.getJsonResponse());
-                        break;
-                    case 3:
-                /*
-                1)Get ApiKey
-                2)Get Pin
-                3)Get RecipientAddress
-                4)Get Amount to send
-                5)Send
-                6)Confirm.
-                */
-                        //Test address: 2MxviUjH41KYbgndhTQe6LstF1yqyqKhqEb
-                        //Test Key: 	e5ed-0847-8256-7f49 (Al's TESTNET DO NOT SENT REAL COIN)
-                        setSecret_Key(obtainSecret_Key());
-                        setRecipent_Adress(obtainReciepient_adresss());
-                        setAmount(obtainAmount());
-                        withDrawFromAccount(getApi_Key(), getAmount(), getrecipient_Address(), getSecret_Key());
-                        view.getStatus(model.getJsonResponse());
-                        view.get_Amount_Sent(model.getJsonResponse());
-                        view.get_Network_Fee(model.getJsonResponse());
-                        break;
-                    case 4:
-                        accessAccountBalance(getApi_Key());
-                        view.printAccountDetails(model.getJsonResponse());
-                        break;
-                    case 5:
-                        exit = false;
-                        System.exit(0);
-                        break;
-                    case 6:
-                        view.pickOptionString();
-                        break;
-                    case 7:
-//                    Estimate Fee Over the network for the amount sent
-//                    1) Get Api key
-//                    2) Sudo amount to send
-//                    3) Adress to send to.
-                        setAmount(obtainAmount());
-                        setRecipent_Adress(obtainReciepient_adresss());
-                        view.get_estimated_network_fee(model.getJsonResponse());
-
-                        break;
-                    default:
-                        view.IncorrectOption();
-                        break;
-
-                }
-            }
-        }
-        catch (JSONException jsonEx){
-            jsonEx.printStackTrace();
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
-    }
 
 }
