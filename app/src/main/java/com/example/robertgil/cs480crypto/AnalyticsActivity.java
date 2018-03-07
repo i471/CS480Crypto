@@ -42,7 +42,6 @@ public class AnalyticsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-
        // AppBarLayout app = (AppBarLayout)findViewById(R.id.appbar);
 
         btc_value = (TextView)findViewById(R.id.btc_value);

@@ -1,9 +1,7 @@
 package com.example.robertgil.cs480crypto;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -11,19 +9,12 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.HashMap;
 
 public class TwoFactorAuthActivity extends AppCompatActivity {
 
@@ -39,9 +30,8 @@ public class TwoFactorAuthActivity extends AppCompatActivity {
         mCodeView = (EditText) findViewById(R.id.code);
         mContinueButton = (Button) findViewById(R.id.continueButton);
         final CheckBox checkBox = (CheckBox) findViewById(R.id.trustDevice);
-        final Bundle b = getIntent().getExtras();
-        final User user = (User) b.getSerializable("user");
-        final String email = user.getEmail();
+        Bundle b = getIntent().getExtras();
+        final String email = b.get("email").toString();
         try {
             twoFactorAuth(email);
         } catch (IOException e) {
@@ -69,11 +59,7 @@ public class TwoFactorAuthActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                     }
-                    Bundle b = new Bundle();
-                    b.putSerializable("user", user);
-                    Intent intent = new Intent(TwoFactorAuthActivity.this, MainActivity.class);
-                    intent.putExtras(b);
-                    startActivity(intent);
+                    //TODO update UI for main screen or something i guess lmfaoooooooooo
                 }
             }
         });
@@ -89,6 +75,7 @@ public class TwoFactorAuthActivity extends AppCompatActivity {
         while ((code = asker.getCode()) == null) {
             Thread.yield();
         }
+        //TODO use code to check against user input for 2FA
         Log.d(TAG, "Email code: " + code);
     }
 
