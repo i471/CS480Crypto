@@ -22,21 +22,23 @@
 
         <!-- android:theme="@style/AppTheme" old style with actionbar -->
 
-        <activity android:name=".Splashscreen"></activity>
-        <activity android:name=".LoginActivity">
+        <activity android:name=".Splashscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".RegisterActivity"
-            android:label="@string/title_activity_register" />
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".RegisterActivity" />
         <activity android:name=".TwoFactorAuthActivity" />
-        <activity android:name=".SendAndReceiveActivity"></activity>
-        <activity android:name=".AnalyticsActivity"></activity>
-        <activity android:name=".ConvertActivity"></activity>
+        <activity android:name=".SendAndReceiveActivity"/>
+        <activity android:name=".AnalyticsActivity" />
+        <activity android:name=".ConvertActivity" />
+        <activity android:name=".About"/>
+        <activity android:name=".Statistics" />
+        <activity android:name=".MainActivity"/>
+        <activity android:name=".SettingsActivity"/>
     </application>
 
 </manifest>

@@ -2,6 +2,7 @@ package com.example.robertgil.cs480crypto;
 
 
         import android.app.Activity;
+        import android.content.Context;
         import android.content.Intent;
         import android.graphics.PixelFormat;
         import android.os.Bundle;
@@ -10,6 +11,8 @@ package com.example.robertgil.cs480crypto;
         import android.view.animation.AnimationUtils;
         import android.widget.ImageView;
         import android.widget.LinearLayout;
+
+        import java.io.File;
 
 public class Splashscreen extends Activity {
     public void onAttachedToWindow() {
