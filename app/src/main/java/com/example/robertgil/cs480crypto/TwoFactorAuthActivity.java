@@ -89,6 +89,7 @@ public class TwoFactorAuthActivity extends AppCompatActivity {
         while ((code = asker.getCode()) == null) {
             Thread.yield();
         }
+        asker.close();
         Log.d(TAG, "Email code: " + code);
     }
 
@@ -96,11 +97,13 @@ public class TwoFactorAuthActivity extends AppCompatActivity {
     private class EmailAsker extends Thread {
 
         /* Replace this field with whatever your public IP is my dude */
+        //private final String ipAddress = "47.148.246.200";
         private final String ipAddress = "47.148.246.200";
         private final int PORT = 25443;
         private String email;
         private ObjectInputStream ois;
         private String code;
+        private Socket socket;
 
         private EmailAsker(){}
 
@@ -111,7 +114,7 @@ public class TwoFactorAuthActivity extends AppCompatActivity {
         @Override
         public void run() {
             try {
-                Socket socket = askForEmail();
+                socket = askForEmail();
                 ois = new ObjectInputStream(socket.getInputStream());
                 while ((code = ois.readObject().toString()) == null) {
                     Thread.yield();
@@ -129,10 +132,23 @@ public class TwoFactorAuthActivity extends AppCompatActivity {
         }
 
         public Socket askForEmail() throws IOException {
-            Socket socket = new Socket(ipAddress, PORT);
+            Socket socket = null;
+            while (true) {
+                try {
+                    socket = new Socket(ipAddress, PORT);
+                    break;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Thread.yield();
+                }
+            }
             ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
             oos.writeObject(email);
             return socket;
+        }
+
+        public void close() throws IOException {
+            socket.close();
         }
 
     }

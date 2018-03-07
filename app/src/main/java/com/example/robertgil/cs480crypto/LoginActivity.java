@@ -255,7 +255,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                         e.printStackTrace();
                                     }
                                     showProgress(true);
-                                    // TODO update UI with the signed-in user's information
                                 } else {
                                     emailNeedsVerification();
                                 }

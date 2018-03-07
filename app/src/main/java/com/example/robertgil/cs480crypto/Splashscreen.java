@@ -25,6 +25,12 @@ public class Splashscreen extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+//        final Context context = getApplicationContext();
+//        final String filename = "trusted.cfg";
+//        final File file = new File(context.getFilesDir(), filename);
+//        file.delete();
+
         setContentView(R.layout.activity_splashscreen);
         StartAnimations();
     }
