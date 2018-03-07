@@ -42,6 +42,14 @@
 
         </android.support.design.widget.TextInputLayout>
 
+
+        <TextView
+            android:id="@+id/wrongCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/wrongCode"
+            android:visibility="gone"/>
+
         <CheckBox
             android:id="@+id/trustDevice"
             android:layout_width="match_parent"

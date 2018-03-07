@@ -26,6 +26,7 @@
     <string name="code">Code</string>
     <string name="trustDevice">Trust device (Disable 2 factor authentication for future logins)</string>
     <string name="continueBtn">Continue</string>
+    <string name="wrongCode">Incorrect code</string>
 
     <!-- Main Activity Strings -->
     <string name="apiLabel">API Key</string>

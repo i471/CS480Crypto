@@ -3,13 +3,13 @@ package com.example.robertgil.cs480crypto;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.HashMap;
 
 public class TwoFactorAuthActivity extends AppCompatActivity {
 
@@ -68,6 +67,9 @@ public class TwoFactorAuthActivity extends AppCompatActivity {
                     Intent intent = new Intent(TwoFactorAuthActivity.this, MainActivity.class);
                     intent.putExtras(b);
                     startActivity(intent);
+                } else {
+                    TextView wrongCode = findViewById(R.id.wrongCode);
+                    wrongCode.setVisibility(View.VISIBLE);
                 }
             }
         });
