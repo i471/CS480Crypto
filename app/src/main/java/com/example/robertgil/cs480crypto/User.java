@@ -1,5 +1,7 @@
 package com.example.robertgil.cs480crypto;
 
+import com.google.firebase.auth.FirebaseUser;
+
 import java.io.Serializable;
 
 /**
@@ -8,6 +10,7 @@ import java.io.Serializable;
 
 public class User implements Serializable {
 
+    private String uid;
     private String email;
     private String walletId;
     private String apiKey;
@@ -53,5 +56,13 @@ public class User implements Serializable {
 
     public void setSecretKey(String secretKey) {
         this.secretKey = secretKey;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 }

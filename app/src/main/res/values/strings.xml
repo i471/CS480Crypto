@@ -27,6 +27,10 @@
     <string name="trustDevice">Trust device (Disable 2 factor authentication for future logins)</string>
     <string name="continueBtn">Continue</string>
 
+    <!-- Main Activity Strings -->
+    <string name="apiLabel">API Key</string>
+    <string name="secretLabel">Secret Key</string>
+    <string name="saveApiInfo"> Save API Info</string>
 
     <!-- random strings for alberts part -->
     <string name="serviceFeeText">will be charged to your wallet as a service fee</string>
