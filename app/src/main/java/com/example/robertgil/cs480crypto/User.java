@@ -1,20 +1,13 @@
 package com.example.robertgil.cs480crypto;
 
-import com.google.firebase.auth.FirebaseUser;
-
-import java.io.Serializable;
-
 /**
  * Created by Alec on 1/20/2018.
  */
 
-public class User implements Serializable {
+public class User {
 
-    private String uid;
     private String email;
     private String walletId;
-    private String apiKey;
-    private String secretKey;
 
     User() {
         email = null;
@@ -40,29 +33,5 @@ public class User implements Serializable {
 
     public String getWalletId() {
         return walletId;
-    }
-
-    public String getApiKey() {
-        return apiKey;
-    }
-
-    public void setApiKey(String apiKey) {
-        this.apiKey = apiKey;
-    }
-
-    public String getSecretKey() {
-        return secretKey;
-    }
-
-    public void setSecretKey(String secretKey) {
-        this.secretKey = secretKey;
-    }
-
-    public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
     }
 }

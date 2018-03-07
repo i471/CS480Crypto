@@ -19,9 +19,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
 import org.json.JSONException;
 
 import java.io.IOException;
@@ -78,14 +75,11 @@ public class SendAndReceiveActivity extends AppCompatActivity implements Adapter
          // THESE VALUES ARE SPECIFIC TO EACH ACCOUNT THESE I WANT TO SAVE TO FIREBASE PER ACCOUNT
          // NEED TO SET USERS API KEY BEFORE WALLET API WORKS
         */
+        testRun.setAPIkey("39c9-9dab-8d2a-62ff"); // Need Api key for account access
+        testRun.setSecret_Key("12345678"); // API also requires Secret key
 
-//        final String userApiKey = "39c9-9dab-8d2a-62ff";
-//        final String secretKey = "12345678";
-        final User user = (User) savedInstanceState.getSerializable("user");
-        final String userApiKey = user.getApiKey();
-        final String userSecretKey = user.getSecretKey();
-        testRun.setAPIkey(userApiKey); // Need Api key for account access
-        testRun.setSecret_Key(userSecretKey); // API also requires Secret key
+
+
 
 
         /**
