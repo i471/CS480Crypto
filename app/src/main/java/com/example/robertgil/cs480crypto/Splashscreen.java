@@ -26,6 +26,7 @@ public class Splashscreen extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        /* The following commented code can be used to delete the file that disables 2FA for an account */
 //        final Context context = getApplicationContext();
 //        final String filename = "trusted.cfg";
 //        final File file = new File(context.getFilesDir(), filename);
