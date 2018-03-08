@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,6 +12,7 @@
     tools:context="com.example.robertgil.cs480crypto.LoginActivity">
 
     <!-- Login progress -->
+
     <ProgressBar
         android:id="@+id/login_progress"
         style="?android:attr/progressBarStyleLarge"
@@ -32,12 +34,16 @@
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="100dp">
 
                 <AutoCompleteTextView
                     android:id="@+id/email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="25dp"
+                    android:layout_marginTop="50dp"
+                    android:fontFamily="sans-serif-smallcaps"
                     android:hint="@string/prompt_email"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
@@ -47,12 +53,15 @@
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="25dp">
 
                 <EditText
                     android:id="@+id/password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="25dp"
+                    android:fontFamily="sans-serif-smallcaps"
                     android:hint="@string/prompt_password"
                     android:imeActionId="6"
                     android:imeActionLabel="@string/action_sign_in_short"
@@ -70,20 +79,23 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:elevation="0dp"
+                android:fontFamily="sans-serif-smallcaps"
                 android:text="@string/action_sign_in"
                 android:textStyle="bold" />
 
-	    <Button
+            <Button
                 android:id="@+id/goto_register_button"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:elevation="0dp"
+                android:fontFamily="sans-serif-smallcaps"
                 android:text="@string/goto_register"
                 android:textStyle="bold" />
 
-	    
+
         </LinearLayout>
+
     </ScrollView>
 </LinearLayout>

@@ -148,17 +148,17 @@
         android:id="@+id/amountTextType"
         android:layout_width="51dp"
         android:layout_height="47dp"
-        android:layout_marginBottom="20dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
         android:ems="10"
         android:fontFamily="sans-serif-smallcaps"
         android:gravity="center"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/serviceFeeAmountID"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/amountEditText" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/amountEditText"
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
     <TextView
         android:id="@+id/BalanceTextView"
@@ -182,7 +182,6 @@
         android:layout_marginTop="5dp"
         android:fontFamily="sans-serif-smallcaps"
         android:text="0"
-        android:textColor="@android:color/holo_green_dark"
         app:layout_constraintBottom_toTopOf="@+id/amountTextType"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/BalanceTextView"
