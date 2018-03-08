@@ -3,6 +3,7 @@ package com.example.robertgil.cs480crypto;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -25,11 +27,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.zxing.integration.android.IntentIntegrator;
 
 import org.json.JSONException;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+
 
 
 public class SendAndReceiveActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -38,12 +42,14 @@ public class SendAndReceiveActivity extends AppCompatActivity implements Adapter
     private TextView serviceFeeID, balanceID;
     private EditText addressToSendToID, amountEditText;
     private Button sendBtn;
+    private ImageButton qrBtn;
     private User user;
     private WalletModel model = new WalletModel();
     private WalletView view = new WalletView();
     private WalletController testRun = new WalletController(view, model);
     private static final String[] paths = {"Dogecoin", "Bitcoin", "Litecoin"};
     private String apiKey, secretKey, walletID;
+    static final int REQUEST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +65,9 @@ public class SendAndReceiveActivity extends AppCompatActivity implements Adapter
         initFirebaseVar();
         setButtonListeners();
 
+
     }
+
 
     private void initFirebaseVar() {
         apiKey = user.getApiKey();
@@ -67,8 +75,6 @@ public class SendAndReceiveActivity extends AppCompatActivity implements Adapter
         testRun.setAPIkey(apiKey); // Need Api key for account access
         testRun.setSecret_Key(secretKey); // API also requires Secret key
     }
-
-
 
     private void setButtonListeners() {
 
@@ -102,7 +108,7 @@ public class SendAndReceiveActivity extends AppCompatActivity implements Adapter
                     double number = Double.valueOf(String.valueOf(amountEditText.getText()));
                     testRun.setAmount(number);
 
-                    Toast.makeText(SendAndReceiveActivity.this, "Amount Received" + number + "hey", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SendAndReceiveActivity.this, "Amount Received", Toast.LENGTH_SHORT).show();
                     new getServiceFee().execute();
                     return true;
                 }
@@ -118,6 +124,7 @@ public class SendAndReceiveActivity extends AppCompatActivity implements Adapter
         serviceFeeID = findViewById(R.id.serviceFeeAmountID);
         balanceID = findViewById(R.id.BalanceAmountTextView);
         sendBtn = findViewById(R.id.sendButtonID);
+
 
         //**********Spinner Set Up***************
         spinner = findViewById(R.id.walletSpinnerID);
@@ -234,7 +241,6 @@ public class SendAndReceiveActivity extends AppCompatActivity implements Adapter
                 }).setNegativeButton("Nope nope nope", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
-                Toast.makeText(SendAndReceiveActivity.this, "", Toast.LENGTH_SHORT).show();
                 dialog.cancel();
             }
         }).show();
@@ -269,7 +275,6 @@ public class SendAndReceiveActivity extends AppCompatActivity implements Adapter
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            Toast.makeText(SendAndReceiveActivity.this, "Estimated", Toast.LENGTH_SHORT).show();
             try {
                 serviceFeeID.setText(view.get_estimated_network_fee(model.getJsonResponse()));
             } catch (JSONException e) {
