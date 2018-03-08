@@ -221,6 +221,6 @@
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/qrscan" />
+       />
 
 </android.support.constraint.ConstraintLayout>
