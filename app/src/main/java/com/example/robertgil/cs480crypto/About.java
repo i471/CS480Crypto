@@ -1,5 +1,4 @@
 package com.example.robertgil.cs480crypto;
-
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
