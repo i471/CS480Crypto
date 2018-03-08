@@ -99,9 +99,7 @@ public class SendAndReceiveActivity extends AppCompatActivity implements Adapter
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
 
-                    String test;
-                    test = String.valueOf(amountEditText.getText());
-                    double number = Double.valueOf(test);
+                    double number = Double.valueOf(String.valueOf(amountEditText.getText()));
                     testRun.setAmount(number);
 
                     Toast.makeText(SendAndReceiveActivity.this, "Amount Received" + number + "hey", Toast.LENGTH_SHORT).show();
@@ -138,11 +136,7 @@ public class SendAndReceiveActivity extends AppCompatActivity implements Adapter
 
     }
 
-    public void accessAccountBalance(String APIKEY) throws IOException, JSONException {
-        String sb = "https://block.io/api/v2/get_balance/?api_key=";
-        sb += APIKEY;
-        model.setJsonResponse(model.getJSON(sb));
-    }
+
 
     /**
      * onItemSelected for the send and recieve spinner.
@@ -159,7 +153,7 @@ public class SendAndReceiveActivity extends AppCompatActivity implements Adapter
 
         switch (pos) {
             case 0:
-                testRun.setAPIkey("39c9-9dab-8d2a-62ff");
+               // testRun.setAPIkey("39c9-9dab-8d2a-62ff");
                 Toast.makeText(this, testRun.getApi_Key(), Toast.LENGTH_SHORT).show();
                 iv.setImageResource(R.drawable.dogecoin);
                 tv.setText("DOGE");
@@ -167,19 +161,21 @@ public class SendAndReceiveActivity extends AppCompatActivity implements Adapter
 
                 break;
             case 1:
-                testRun.setAPIkey("cc80-06be-af22-b8dd"); //DOGE WALLET
+                //testRun.setAPIkey("cc80-06be-af22-b8dd"); //DOGE WALLET
                 Toast.makeText(this, testRun.getApi_Key(), Toast.LENGTH_SHORT).show();
                 iv.setImageResource(R.drawable.bitcoin);
                 tv.setText("BTC");
-                new accessAccountBalance().execute(testRun.getApi_Key());
+                balanceID.setText("Need Api Key");
+                //new accessAccountBalance().execute(testRun.getApi_Key());
 
                 break;
             case 2:
-                testRun.setAPIkey("5d56-aa37-16ff-d08b");//litecoinwallet
+                //testRun.setAPIkey("5d56-aa37-16ff-d08b");//litecoinwallet
                 Toast.makeText(this, testRun.getApi_Key(), Toast.LENGTH_SHORT).show();
                 iv.setImageResource(R.drawable.litecoin2);
                 tv.setText("LTC");
-                new accessAccountBalance().execute(testRun.getApi_Key());
+                balanceID.setText("Need Api Key");
+               // new accessAccountBalance().execute(testRun.getApi_Key());
 
                 break;
         }
@@ -194,11 +190,10 @@ public class SendAndReceiveActivity extends AppCompatActivity implements Adapter
     }
 
     private class accessAccountBalance extends AsyncTask<String, String, String> {
-        //DecimalFormat format = new DecimalFormat("0.###");
         @Override
         protected String doInBackground(String... strings) {
             try {
-                accessAccountBalance(strings[0]);
+                testRun.accessAccountBalance(strings[0]);
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (JSONException e) {
@@ -234,7 +229,6 @@ public class SendAndReceiveActivity extends AppCompatActivity implements Adapter
                 .setPositiveButton("Yes, im sure.", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        if(check())
                         new sendConfirmationOnButtonPress().execute();
                     }
                 }).setNegativeButton("Nope nope nope", new DialogInterface.OnClickListener() {
@@ -284,15 +278,6 @@ public class SendAndReceiveActivity extends AppCompatActivity implements Adapter
 
         }
     }
-    
-    public boolean check() {
-        if (TextUtils.isEmpty(addressToSendToID.getText().toString())| TextUtils.isEmpty(user.getSecretKey()) | TextUtils.isEmpty(user.getApiKey())){
-            System.out.println("FALSED");
-            return false;
-        }
-        System.out.println("TRUE");
-        return true;
-    }
 
     /**
      * sendConfirmationOnButtonPress
@@ -305,6 +290,13 @@ public class SendAndReceiveActivity extends AppCompatActivity implements Adapter
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+
+
+             //To Make sure amount and adress is there before sending
+            double number = Double.valueOf(String.valueOf(amountEditText.getText()));
+            testRun.setAmount(number);
+            testRun.setRecipent_Adress(String.valueOf(addressToSendToID.getText()));
+
 
             apikey = testRun.getApi_Key();
             amount = testRun.getAmount();
