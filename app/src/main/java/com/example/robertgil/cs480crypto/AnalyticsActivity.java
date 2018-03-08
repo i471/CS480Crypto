@@ -26,7 +26,7 @@ import java.util.List;
 public class AnalyticsActivity extends AppCompatActivity {
     TextView btc_value, eth_value, currency;
     private static final String URL_DATA =
-            "https://min-api.cryptocompare.com/data/pricemulti?fsyms=BTC,ETH&tsyms=NGN,USD,EUR,JPY,GBP,AUD,CAD,CHF,CNY,KES,GHS,UGX,ZAR,XAF,NZD,MYR,BND,GEL,RUB,INR";
+            "https://min-api.cryptocompare.com/data/pricemulti?fsyms=BTC,ETH&tsyms=USD,EUR,JPY,CAD";
 
     private RecyclerView recyclerView;
     private List<CardItems> cardItemsList;
