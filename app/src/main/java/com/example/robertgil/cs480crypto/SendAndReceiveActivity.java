@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -19,8 +20,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONException;
 
@@ -34,55 +38,39 @@ public class SendAndReceiveActivity extends AppCompatActivity implements Adapter
     private TextView serviceFeeID, balanceID;
     private EditText addressToSendToID, amountEditText;
     private Button sendBtn;
-
+    private User user;
     private WalletModel model = new WalletModel();
     private WalletView view = new WalletView();
     private WalletController testRun = new WalletController(view, model);
     private static final String[] paths = {"Dogecoin", "Bitcoin", "Litecoin"};
-
+    private String apiKey, secretKey, walletID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_send_and_receive);
-        amountEditText = findViewById(R.id.amountEditText);
-        addressToSendToID = findViewById(R.id.adressToSendToText);
-        serviceFeeID = findViewById(R.id.serviceFeeAmountID);
-        balanceID = findViewById(R.id.BalanceAmountTextView);
+
+        Bundle b = getIntent().getExtras();
+        user = (User) b.getSerializable("user");
 
 
-        //**********Spinner Set Up***************
-        spinner = findViewById(R.id.walletSpinnerID);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, paths);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(this);
+        initWidgets();
+        initFirebaseVar();
+        setButtonListeners();
 
+    }
 
-        //*********Button Initialization***********
-        sendBtn = findViewById(R.id.sendButtonID);
-        sendBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                confirmDialog();
-            }
-        });
-
-        testRun.setRecipent_Adress(String.valueOf(addressToSendToID.getText()));
-        testRun.setAmount(2);
-
-        final String userApiKey = "39c9-9dab-8d2a-62ff"; // doge test
-        final String secretKey = "12345678";
-
-        //final User user = (User) savedInstanceState.getSerializable("user");
-        //final String userApiKey = user.getApiKey();
-        //final String userSecretKey = user.getSecretKey();
-
-
-        testRun.setAPIkey(userApiKey); // Need Api key for account access
+    private void initFirebaseVar() {
+        apiKey = user.getApiKey();
+        secretKey = user.getSecretKey();
+        testRun.setAPIkey(apiKey); // Need Api key for account access
         testRun.setSecret_Key(secretKey); // API also requires Secret key
+    }
 
+
+
+    private void setButtonListeners() {
 
         /**
          * Receives input from the ADDRESS EditText Field
@@ -110,22 +98,45 @@ public class SendAndReceiveActivity extends AppCompatActivity implements Adapter
         amountEditText.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                    Toast.makeText(SendAndReceiveActivity.this, "Amount Received", Toast.LENGTH_SHORT).show();
+
                     String test;
                     test = String.valueOf(amountEditText.getText());
                     double number = Double.valueOf(test);
                     testRun.setAmount(number);
+
+                    Toast.makeText(SendAndReceiveActivity.this, "Amount Received" + number + "hey", Toast.LENGTH_SHORT).show();
                     new getServiceFee().execute();
                     return true;
-
                 }
                 return false;
             }
         });
 
-
     }
 
+    public void initWidgets() {
+        amountEditText = findViewById(R.id.amountEditText);
+        addressToSendToID = findViewById(R.id.adressToSendToText);
+        serviceFeeID = findViewById(R.id.serviceFeeAmountID);
+        balanceID = findViewById(R.id.BalanceAmountTextView);
+        sendBtn = findViewById(R.id.sendButtonID);
+
+        //**********Spinner Set Up***************
+        spinner = findViewById(R.id.walletSpinnerID);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, paths);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
+
+        //*********Button Initialization***********
+        sendBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                confirmDialog();
+            }
+        });
+
+    }
 
     public void accessAccountBalance(String APIKEY) throws IOException, JSONException {
         String sb = "https://block.io/api/v2/get_balance/?api_key=";
@@ -148,7 +159,7 @@ public class SendAndReceiveActivity extends AppCompatActivity implements Adapter
 
         switch (pos) {
             case 0:
-                testRun.setAPIkey("39c9-9dab-8d2a-62ff"); //DOGE WALLET
+                testRun.setAPIkey("39c9-9dab-8d2a-62ff");
                 Toast.makeText(this, testRun.getApi_Key(), Toast.LENGTH_SHORT).show();
                 iv.setImageResource(R.drawable.dogecoin);
                 tv.setText("DOGE");
@@ -180,8 +191,6 @@ public class SendAndReceiveActivity extends AppCompatActivity implements Adapter
      */
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
-
-
     }
 
     private class accessAccountBalance extends AsyncTask<String, String, String> {
@@ -225,19 +234,20 @@ public class SendAndReceiveActivity extends AppCompatActivity implements Adapter
                 .setPositiveButton("Yes, im sure.", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
+                        if(check())
                         new sendConfirmationOnButtonPress().execute();
                     }
                 }).setNegativeButton("Nope nope nope", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        Toast.makeText(SendAndReceiveActivity.this, "", Toast.LENGTH_SHORT).show();
-                        dialog.cancel();
-                    }
-                }).show();
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                Toast.makeText(SendAndReceiveActivity.this, "", Toast.LENGTH_SHORT).show();
+                dialog.cancel();
+            }
+        }).show();
     }
 
 
-    private class getServiceFee extends AsyncTask<Void,Void,Void>{
+    private class getServiceFee extends AsyncTask<Void, Void, Void> {
 
         String apikey, recAddress;
         Double amount;
@@ -253,7 +263,7 @@ public class SendAndReceiveActivity extends AppCompatActivity implements Adapter
         @Override
         protected Void doInBackground(Void... voids) {
             try {
-                testRun.estimateNetworkFee(apikey,amount,recAddress);
+                testRun.estimateNetworkFee(apikey, amount, recAddress);
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (JSONException e) {
@@ -274,6 +284,15 @@ public class SendAndReceiveActivity extends AppCompatActivity implements Adapter
 
         }
     }
+    
+    public boolean check() {
+        if (TextUtils.isEmpty(addressToSendToID.getText().toString())| TextUtils.isEmpty(user.getSecretKey()) | TextUtils.isEmpty(user.getApiKey())){
+            System.out.println("FALSED");
+            return false;
+        }
+        System.out.println("TRUE");
+        return true;
+    }
 
     /**
      * sendConfirmationOnButtonPress
@@ -286,7 +305,7 @@ public class SendAndReceiveActivity extends AppCompatActivity implements Adapter
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            //Withdrawl needs APIKEY,AMOUNT,RECIPENTADDRESS,SECRETKEY//
+
             apikey = testRun.getApi_Key();
             amount = testRun.getAmount();
             recAddress = testRun.getrecipient_Address();
@@ -296,6 +315,7 @@ public class SendAndReceiveActivity extends AppCompatActivity implements Adapter
 
         @Override
         protected Void doInBackground(Void... voids) {
+
             try {
                 testRun.withDrawFromAccount(apikey, amount, recAddress, secretKey);
             } catch (IOException e) {

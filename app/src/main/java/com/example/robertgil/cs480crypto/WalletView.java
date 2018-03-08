@@ -11,7 +11,7 @@ public class WalletView {
 
 
     public String getBalance(JSONObject Response) throws JSONException {
-        //System.out.println("Balance : " + Response.getJSONObject("data").getString("available_balance"));
+        System.out.println("Balance : " + Response.getJSONObject("data").getString("available_balance"));
         return Response.getJSONObject("data").getString("available_balance");
     }
 
