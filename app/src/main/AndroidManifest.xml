@@ -25,14 +25,19 @@
         <activity android:name=".Splashscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".TwoFactorAuthActivity" />
-        <activity android:name=".SendAndReceiveActivity"/>
+
+
+        <activity android:name=".SendAndReceiveActivity">
+
+        </activity>
+
+
         <activity android:name=".AnalyticsActivity" />
         <activity android:name=".ConvertActivity" />
         <activity android:name=".About"/>

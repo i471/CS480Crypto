@@ -26,34 +26,18 @@
         android:id="@+id/walletSpinnerID"
         android:layout_width="224dp"
         android:layout_height="41dp"
-        android:layout_marginBottom="391dp"
-        android:layout_marginEnd="12dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2" />
-
-    <EditText
-        android:id="@+id/amountEditText"
-        android:layout_width="177dp"
-        android:layout_height="39dp"
-        android:layout_marginEnd="44dp"
-        android:layout_marginStart="16dp"
-        android:ems="10"
-        android:gravity="center"
-        android:inputType="textPersonName"
-        android:text="2.00"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/amountImage"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+        android:layout_marginTop="64dp"
+        app:layout_constraintStart_toEndOf="@+id/typeOfWalletImage"
+        app:layout_constraintTop_toBottomOf="@+id/adressToSendToText" />
 
     <Button
         android:id="@+id/sendButtonID"
         style="@style/Widget.AppCompat.Button.Small"
         android:layout_width="226dp"
         android:layout_height="39dp"
-        android:layout_marginBottom="112dp"
+        android:layout_marginBottom="96dp"
         android:layout_marginEnd="48dp"
-        android:onClick="sendButton"
+        android:fontFamily="sans-serif-smallcaps"
         android:text="@string/sendText"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline2" />
@@ -62,8 +46,9 @@
         android:id="@+id/serviceFeeTextId"
         android:layout_width="224dp"
         android:layout_height="40dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginEnd="8dp"
+        android:fontFamily="sans-serif-smallcaps"
         android:gravity="center"
         android:text="@string/serviceFeeText"
         app:layout_constraintBottom_toTopOf="@+id/sendButtonID"
@@ -76,6 +61,7 @@
         android:layout_width="98dp"
         android:layout_height="16dp"
         android:layout_marginStart="16dp"
+        android:fontFamily="sans-serif-smallcaps"
         android:text="@string/sendMoneyToText"
         app:layout_constraintStart_toEndOf="@+id/sendMoneyToImage"
         app:layout_constraintTop_toTopOf="@+id/sendMoneyToImage" />
@@ -84,8 +70,9 @@
         android:id="@+id/fromWalletTextID"
         android:layout_width="wrap_content"
         android:layout_height="23dp"
-        android:layout_marginBottom="2dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginStart="12dp"
+        android:fontFamily="sans-serif-smallcaps"
         android:text="@string/fromWalletText"
         app:layout_constraintBottom_toTopOf="@+id/walletSpinnerID"
         app:layout_constraintStart_toEndOf="@+id/typeOfWalletImage" />
@@ -94,10 +81,11 @@
         android:id="@+id/serviceFeeAmountID"
         android:layout_width="125dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
         android:layout_marginEnd="100dp"
+        android:fontFamily="sans-serif-smallcaps"
         android:gravity="center"
         android:text="@string/_3_00"
+        android:textColor="@android:color/holo_red_light"
         app:layout_constraintBottom_toTopOf="@+id/serviceFeeTextId"
         app:layout_constraintEnd_toStartOf="@+id/guideline2" />
 
@@ -105,8 +93,9 @@
         android:id="@+id/textView5"
         android:layout_width="132dp"
         android:layout_height="25dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="76dp"
+        android:fontFamily="sans-serif-smallcaps"
         android:text="@string/amountText"
         app:layout_constraintStart_toEndOf="@+id/amountImage"
         app:layout_constraintTop_toBottomOf="@+id/walletSpinnerID" />
@@ -116,7 +105,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_end="353dp" />
+        app:layout_constraintGuide_end="352dp" />
 
     <ImageView
         android:id="@+id/sendMoneyToImage"
@@ -132,7 +121,7 @@
         android:id="@+id/amountImage"
         android:layout_width="56dp"
         android:layout_height="66dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="84dp"
         android:contentDescription="@string/empty"
         app:layout_constraintStart_toStartOf="@+id/guideline5"
         app:layout_constraintTop_toBottomOf="@+id/typeOfWalletImage"
@@ -158,35 +147,59 @@
     <EditText
         android:id="@+id/amountTextType"
         android:layout_width="51dp"
-        android:layout_height="41dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="56dp"
+        android:layout_height="47dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="4dp"
         android:ems="10"
+        android:fontFamily="sans-serif-smallcaps"
         android:gravity="center"
         android:inputType="textPersonName"
-        app:layout_constraintStart_toEndOf="@+id/amountEditText"
-        app:layout_constraintTop_toBottomOf="@+id/walletSpinnerID" />
+        app:layout_constraintBottom_toTopOf="@+id/serviceFeeAmountID"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/amountEditText" />
 
     <TextView
         android:id="@+id/BalanceTextView"
-        android:layout_width="54dp"
+        android:layout_width="116dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="16dp"
-        android:text="Balance:"
-        app:layout_constraintEnd_toStartOf="@+id/BalanceAmountTextView"
-        app:layout_constraintHorizontal_bias="0.612"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="sans-serif-smallcaps"
+        android:gravity="center_vertical"
+        android:text="Account Balance:"
+        app:layout_constraintStart_toStartOf="@+id/guideline5"
+        app:layout_constraintTop_toBottomOf="@+id/walletSpinnerID" />
 
     <TextView
         android:id="@+id/BalanceAmountTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="19dp"
-        android:layout_marginEnd="200dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="137dp"
+        android:layout_height="21dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:fontFamily="sans-serif-smallcaps"
         android:text="0"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textColor="@android:color/holo_green_dark"
+        app:layout_constraintBottom_toTopOf="@+id/amountTextType"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/BalanceTextView"
+        app:layout_constraintTop_toBottomOf="@+id/walletSpinnerID"
+        app:layout_constraintVertical_bias="0.194" />
+
+    <EditText
+        android:id="@+id/amountEditText"
+        android:layout_width="181dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:gravity="center_vertical|center_horizontal"
+        android:inputType="phone"
+        android:text="2.00"
+        app:layout_constraintStart_toEndOf="@+id/amountImage"
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
 </android.support.constraint.ConstraintLayout>

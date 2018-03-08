@@ -25,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 
 
 public class SendAndReceiveActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -71,21 +72,16 @@ public class SendAndReceiveActivity extends AppCompatActivity implements Adapter
         testRun.setRecipent_Adress(String.valueOf(addressToSendToID.getText()));
         testRun.setAmount(2);
 
-        //****************************************
-        //
-        // ********************************************
-        /**
-         // THESE VALUES ARE SPECIFIC TO EACH ACCOUNT THESE I WANT TO SAVE TO FIREBASE PER ACCOUNT
-         // NEED TO SET USERS API KEY BEFORE WALLET API WORKS
-        */
+        final String userApiKey = "39c9-9dab-8d2a-62ff"; // doge test
+        final String secretKey = "12345678";
 
-//        final String userApiKey = "39c9-9dab-8d2a-62ff";
-//        final String secretKey = "12345678";
-        final User user = (User) savedInstanceState.getSerializable("user");
-        final String userApiKey = user.getApiKey();
-        final String userSecretKey = user.getSecretKey();
+        //final User user = (User) savedInstanceState.getSerializable("user");
+        //final String userApiKey = user.getApiKey();
+        //final String userSecretKey = user.getSecretKey();
+
+
         testRun.setAPIkey(userApiKey); // Need Api key for account access
-        testRun.setSecret_Key(userSecretKey); // API also requires Secret key
+        testRun.setSecret_Key(secretKey); // API also requires Secret key
 
 
         /**
@@ -111,7 +107,6 @@ public class SendAndReceiveActivity extends AppCompatActivity implements Adapter
          * as soon as the accept button or enter is pressed its saved into the instance
          * */
 
-        amountEditText.setInputType(InputType.TYPE_CLASS_NUMBER); // Only allow numbers in amount field
         amountEditText.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
@@ -120,15 +115,14 @@ public class SendAndReceiveActivity extends AppCompatActivity implements Adapter
                     test = String.valueOf(amountEditText.getText());
                     double number = Double.valueOf(test);
                     testRun.setAmount(number);
-
-
+                    new getServiceFee().execute();
                     return true;
+
                 }
                 return false;
             }
         });
 
-        new accessAccountBalance().execute(testRun.getApi_Key());
 
     }
 
@@ -150,24 +144,32 @@ public class SendAndReceiveActivity extends AppCompatActivity implements Adapter
 
         iv = findViewById(R.id.typeOfWalletImage); // initialize walletpic to starting picture
         tv = findViewById(R.id.amountTextType);
+
+
         switch (pos) {
             case 0:
                 testRun.setAPIkey("39c9-9dab-8d2a-62ff"); //DOGE WALLET
                 Toast.makeText(this, testRun.getApi_Key(), Toast.LENGTH_SHORT).show();
                 iv.setImageResource(R.drawable.dogecoin);
                 tv.setText("DOGE");
+                new accessAccountBalance().execute(testRun.getApi_Key());
+
                 break;
             case 1:
                 testRun.setAPIkey("cc80-06be-af22-b8dd"); //DOGE WALLET
                 Toast.makeText(this, testRun.getApi_Key(), Toast.LENGTH_SHORT).show();
                 iv.setImageResource(R.drawable.bitcoin);
                 tv.setText("BTC");
+                new accessAccountBalance().execute(testRun.getApi_Key());
+
                 break;
             case 2:
                 testRun.setAPIkey("5d56-aa37-16ff-d08b");//litecoinwallet
                 Toast.makeText(this, testRun.getApi_Key(), Toast.LENGTH_SHORT).show();
                 iv.setImageResource(R.drawable.litecoin2);
                 tv.setText("LTC");
+                new accessAccountBalance().execute(testRun.getApi_Key());
+
                 break;
         }
     }
@@ -183,7 +185,7 @@ public class SendAndReceiveActivity extends AppCompatActivity implements Adapter
     }
 
     private class accessAccountBalance extends AsyncTask<String, String, String> {
-
+        //DecimalFormat format = new DecimalFormat("0.###");
         @Override
         protected String doInBackground(String... strings) {
             try {
@@ -199,7 +201,10 @@ public class SendAndReceiveActivity extends AppCompatActivity implements Adapter
         @Override
         protected void onPostExecute(String result) {
             try {
-                balanceID.setText(view.getBalance(model.getJsonResponse()));
+                String s;
+                s = view.getBalance(model.getJsonResponse());
+                s = s.indexOf(".") < 0 ? s : s.replaceAll("0*$", "").replaceAll("\\.$", "");
+                balanceID.setText(s);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -213,23 +218,61 @@ public class SendAndReceiveActivity extends AppCompatActivity implements Adapter
      * Provides two options on the alert dialog, yes/no and runs the code accordingly
      */
     private void confirmDialog() {
+
         AlertDialog.Builder builder = new AlertDialog.Builder(SendAndReceiveActivity.this);
-        builder
-                .setMessage("Are you sure?")
+        builder.setMessage("hi");
+        builder.setMessage("Are you sure? A " + serviceFeeID.getText() + " network fee will be deducted from your account")
                 .setPositiveButton("Yes, im sure.", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         new sendConfirmationOnButtonPress().execute();
                     }
-                })
-                .setNegativeButton("Nope nope nope", new DialogInterface.OnClickListener() {
+                }).setNegativeButton("Nope nope nope", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        Toast.makeText(SendAndReceiveActivity.this, "No", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SendAndReceiveActivity.this, "", Toast.LENGTH_SHORT).show();
                         dialog.cancel();
                     }
-                })
-                .show();
+                }).show();
+    }
+
+
+    private class getServiceFee extends AsyncTask<Void,Void,Void>{
+
+        String apikey, recAddress;
+        Double amount;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            apikey = testRun.getApi_Key();
+            amount = testRun.getAmount();
+            recAddress = testRun.getrecipient_Address();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                testRun.estimateNetworkFee(apikey,amount,recAddress);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            Toast.makeText(SendAndReceiveActivity.this, "Estimated", Toast.LENGTH_SHORT).show();
+            try {
+                serviceFeeID.setText(view.get_estimated_network_fee(model.getJsonResponse()));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 
     /**
@@ -239,7 +282,6 @@ public class SendAndReceiveActivity extends AppCompatActivity implements Adapter
     private class sendConfirmationOnButtonPress extends AsyncTask<Void, Void, Void> {
         String apikey, recAddress, secretKey;
         Double amount;
-
 
         @Override
         protected void onPreExecute() {
