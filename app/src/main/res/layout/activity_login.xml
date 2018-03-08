@@ -72,6 +72,13 @@
 
             </android.support.design.widget.TextInputLayout>
 
+            <TextView
+                android:id="@+id/wrongCredentials"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/wrongCredentials"
+                android:visibility="gone"/>
+
             <Button
                 android:id="@+id/email_sign_in_button"
                 style="?android:textAppearanceSmall"

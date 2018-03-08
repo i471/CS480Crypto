@@ -259,7 +259,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                     emailNeedsVerification();
                                 }
                             } else {
-                                // TODO If sign in fails, display a message to the user.
+                                TextView wrongCredentials = findViewById(R.id.wrongCredentials);
+                                wrongCredentials.setVisibility(View.VISIBLE);
                                 Log.d(TAG,"Login task unsuccessful");
                             }
 

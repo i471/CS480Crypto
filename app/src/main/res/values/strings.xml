@@ -14,6 +14,7 @@
         completions."
     </string>
     <string name="goto_register">Need an account? Register</string>
+    <string name="wrongCredentials">Incorrect username or password</string>
 
     <!-- Strings related to register -->
     <string name="title_activity_register">Register</string>
