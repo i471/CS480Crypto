@@ -25,7 +25,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:text="NGN"
+                android:text="USD"
                 android:padding="10dp"
                 android:textColor="#78ff9f"
                 android:textSize="20sp"
